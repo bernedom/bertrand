@@ -4,6 +4,7 @@ add_executable(bertrand_tests)
 target_sources(bertrand_tests
                PRIVATE
                src/Catch2Main.cc
+               src/bertrand_tests.cc
                )
 
 target_include_directories(
