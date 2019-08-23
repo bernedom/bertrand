@@ -1,11 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
 
 add_executable(bertrand_tests)
-target_sources(bertrand_tests
-               PRIVATE
-               src/Catch2Main.cc
-               src/bertrand_tests.cc
-               )
+target_sources(bertrand_tests PRIVATE src/Catch2Main.cc src/bertrand_tests.cc)
 
 target_include_directories(
   bertrand_tests
@@ -23,4 +19,14 @@ target_compile_options(
           $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-Werror>
           $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-pedantic>)
 
+add_executable(failing_contract)
+target_sources(failing_contract PRIVATE src/failing_contract.cc)
+
+target_include_directories(
+  failing_contract
+  PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+          $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
+
 add_test(NAME bertrand_tests COMMAND bertrand_tests)
+# add_test(NAME failing_contract COMMAND failing_contract)
+# set_tests_properties(failing_contract PROPERTIES WILL_FAIL TRUE)
