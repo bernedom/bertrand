@@ -10,9 +10,11 @@ addons:
       - g++-7
       - clang-6.0
       - ninja-build
+      - shunit2
   homebrew:
     packages:
       - ninja
+      - shunit2
 
 os: linux
 env:
@@ -44,3 +46,5 @@ script:
   - mkdir build && cd build && cmake .. -G Ninja 
   - cmake --build . --config Debug
   - ctest -C Debug
+  - cd ..
+  - ./test/test-program-termination.sh

@@ -22,6 +22,12 @@ void assert_handler(bool b) {
 
 #endif
 
+#ifndef NDEBUG
 #define require(ARG) __bertrand_handle_assert(ARG)
 #define ensure(ARG) __bertrand_handle_assert(ARG)
 #define invariant(ARG) __bertrand_handle_assert(ARG)
+#else
+#define require(ARG) (void(0))
+#define ensure(ARG) (void(0))
+#define invariant(ARG) (void(0))
+#endif
