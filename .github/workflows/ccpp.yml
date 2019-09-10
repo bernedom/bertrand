@@ -13,9 +13,15 @@ jobs:
       - name: build
         run: cmake --build ./build
       - name: ctest
-        run: ctest ./build
+        run: cd build && ctest ./build
 
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout/@v1
+      - name: dependency-install
+        run: sudo apt install -y python3-pip python3-setuptools
+      - name: conan-install
+        run: sudo pip3 install conan
+      - name: create-package
+        run: conan create . bertrand/unstable
