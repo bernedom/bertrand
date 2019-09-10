@@ -16,6 +16,7 @@ jobs:
         run: cd build && ctest ./build
 
   deploy:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout/@v1
@@ -23,5 +24,9 @@ jobs:
         run: sudo apt install -y python3-pip python3-setuptools
       - name: conan-install
         run: sudo pip3 install conan
+      - name: conan-remote
+        run: conan remote add bernedom https://api.bintray.com/conan/bernedom/conan
       - name: create-package
         run: conan create . bertrand/unstable
+      - name: upload-package
+        run: conan upload bertrand/*@bertrand/unstable --all -c -r -bernedom
