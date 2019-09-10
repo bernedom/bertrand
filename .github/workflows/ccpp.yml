@@ -4,14 +4,18 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-    
+
     steps:
-    - uses: actions/checkout@v1
-    - name: cmake
-      run: mkdir build && cd build && cmake ..
-    - name: build 
-      run: cmake --build ./build 
-    - name: ctest
-      run: ctest ./build
+      - uses: actions/checkout@v1
+      - name: cmake
+        run: mkdir build && cd build && cmake ..
+      - name: build
+        run: cmake --build ./build
+      - name: ctest
+        run: ctest ./build
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout/@v1
