@@ -2,13 +2,16 @@
 name: "Hello World"
 description: "Greet someone and record the time"
 inputs:
-  who-to-greet: # id of input
-    description: "Who to greet"
+  channel:
+    description: "The channel for the package (i.e. user/channel)"
     required: true
-    default: "World"
-outputs:
-  msg: # id of output
-    description: "The time we greeted you"
+  conan-login: # id of input
+    description: "bintray username"
+    required: true
+  conan-pass:
+    description: "bintray token"
+    required: true
+
 runs:
   using: "docker"
   image: "Dockerfile"
