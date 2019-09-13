@@ -1,21 +1,45 @@
-# Hello world docker action
+# Conan build and deploy action
 
-This action prints "Hello World" or "Hello" + the name of a person to greet to the log.
+This action creates a conan package and deploys it to bintray
 
 ## Inputs
 
-### `who-to-greet`
+### `conan_package`
 
-**Required** The name of the person to greet. Default `"World"`.
+**Required** The name of the package (i.e. bertrand).
+
+### `conan_channel` 
+
+**Required** The channel to publish to (i.e. user/channel)
+
+### `conan_login`
+
+**Required** The username to use for the login to bintray. Preferably use a [secret](https://help.github.com/en/articles/virtual-environments-for-github-actions#creating-and-using-secrets-encrypted-variables) to pass this
+
+### `conan_pass`
+
+**Required** The password or API token for bintray. Again use a [secret](https://help.github.com/en/articles/virtual-environments-for-github-actions#creating-and-using-secrets-encrypted-variables) to pass this
+
+
+### `conan_remote` 
+
+**Required** The remote to push to
+
 
 ## Outputs
 
-### `time`
-
-The time we greeted you.
+None
 
 ## Example usage
 
-uses: actions/hello-world-docker-action@v1
-with:
-  who-to-greet: 'Mona the Octocat'
+```yaml
+
+ - uses: ./.github/actions/deploy-conan-to-bintray
+        with:
+          conan_package: bertrand
+          conan_channel: bertrand/unstable
+          conan_remote: "https://api.bintray.com/conan/bernedom/conan"
+          conan_user: ${{secrets.CONAN_LOGIN_USERNAME}}
+          conan_pass: ${{secrets.CONAN_PASSWORD}}
+        id: conan-deploy
+```

@@ -5,18 +5,6 @@ on:
   - pull_request
 
 jobs:
-  custom-conan:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: ./.github/actions/deploy-conan-to-bintray
-        with:
-          conan-login: ${{secrets.CONAN_LOGIN_USERNAME}}
-          conan-pass: ${{secrets.CONAN_PASSWORD}}
-          channel: bertrand/unstable
-          args: -v $(pwd):/home/bertrand
-        id: conan-deploy
-
   build:
     runs-on: ubuntu-latest
 
@@ -28,21 +16,17 @@ jobs:
         run: cmake --build ./build
       - name: ctest
         run: cd build && ctest ./build
-  # deploy:
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout/@v1
-  #     - name: dependency-install
-  #       run: sudo apt install -y python3-pip python3-setuptools
-  #     - name: conan-install
-  #       run: sudo pip3 install conan
-  #     - name: conan-remote
-  #       run: conan remote add bernedom https://api.bintray.com/conan/bernedom/conan
-  #     - name: create-package
-  #       run: conan create . bertrand/unstable
-  #     - name: upload-package
-  #       env:
-  #         CONAN_LOGIN_USERNAME: ${{secrets.CONAN_LOGIN_USERNAME}}
-  #         CONAN_PASSWORD: ${{secrets.CONAN_PASSWORD}}
-  #       run: conan upload bertrand/*@bertrand/unstable --all -c -r bernedom
+
+  deploy-to-conan:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: ./.github/actions/deploy-conan-to-bintray
+        with:
+          conan_package: bertrand
+          conan_channel: bertrand/unstable
+          conan_remote: "https://api.bintray.com/conan/bernedom/conan"
+          conan_user: ${{secrets.CONAN_LOGIN_USERNAME}}
+          conan_pass: ${{secrets.CONAN_PASSWORD}}
+        id: conan-deploy

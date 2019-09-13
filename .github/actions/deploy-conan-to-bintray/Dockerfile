@@ -7,6 +7,6 @@ RUN pip3 install --upgrade pip
 RUN pip3 install conan
 COPY ./deploy-to-conan.sh /deploy-to-conan.sh
 
-WORKDIR /home/bertrand
+#WORKDIR /home/bertrand
 
 ENTRYPOINT [ "/deploy-to-conan.sh" ]
