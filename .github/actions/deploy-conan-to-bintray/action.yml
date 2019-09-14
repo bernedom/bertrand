@@ -1,0 +1,23 @@
+# action.yml
+name: "Deploy conan to bintray"
+description: "Builds a conan package and deploys it to bintray"
+inputs:
+  conan_package:
+    description: "The name of the package (i.e. bertrand)"
+    required: true
+  conan_channel:
+    description: "The channel for the package (i.e. user/channel)"
+    required: true
+  conan_login:
+    description: "bintray username"
+    required: true
+  conan_pass:
+    description: "bintray token"
+    required: true
+  conan_remote:
+    description: "The remote to upload to"
+    required: true
+
+runs:
+  using: "docker"
+  image: "Dockerfile"
