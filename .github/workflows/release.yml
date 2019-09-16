@@ -1,0 +1,32 @@
+name: C/C++ release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: cmake
+        run: mkdir build && cd build && cmake ..
+      - name: build
+        run: cmake --build ./build
+      - name: ctest
+        run: cd build && ctest ./build
+
+  deploy-to-conan:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: ./.github/actions/deploy-conan-to-bintray
+        with:
+          conan_package: bertrand
+          conan_channel: bertrand/stable
+          conan_remote: "https://api.bintray.com/conan/bernedom/conan"
+          conan_user: ${{secrets.CONAN_LOGIN_USERNAME}}
+          conan_pass: ${{secrets.CONAN_PASSWORD}}
+        id: conan-deploy
