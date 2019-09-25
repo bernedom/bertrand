@@ -15,20 +15,19 @@ TEST_CASE(
 }
 
 TEST_CASE(
-    "GIVEN a postcondition contract WEHEN passed true THEN no assert happens") {
+    "GIVEN a postcondition contract WHEN passed true THEN no assert happens") {
   REQUIRE_NOTHROW(ensure(true));
 }
 
 TEST_CASE(
-    "GIVEN a postcondition contract WEHEN passed false THEN  assert happens") {
+    "GIVEN a postcondition contract WHEN passed false THEN  assert happens") {
   REQUIRE_THROWS(ensure(false));
 }
 TEST_CASE(
-    "GIVEN an invariant contract WEHEN passed true THEN no assert happens") {
+    "GIVEN an invariant contract WHEN passed true THEN no assert happens") {
   REQUIRE_NOTHROW(invariant(true));
 }
 
-TEST_CASE(
-    "GIVEN a invariant contract WEHEN passed false THEN  assert happens") {
+TEST_CASE("GIVEN a invariant contract WHEN passed false THEN  assert happens") {
   REQUIRE_THROWS(invariant(false));
 }
