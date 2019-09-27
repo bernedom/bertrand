@@ -1,5 +1,9 @@
 #pragma once
 
+///@todo add text
+///@todo add file location
+///@todo add possibility for delivering stack trace
+
 // asserts as exceptions is a workaround for testing purposes, do not use in
 // production
 #ifdef __BERTRAND_CONTRACTS_ARE_EXCEPTIONS
