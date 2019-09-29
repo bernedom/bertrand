@@ -23,7 +23,7 @@ inline void assert_handler(bool b, const char *message) {
 #else
 #include <cassert>
 
-#define __bertrand_handle_assert(EXPR, MSG) assert(EXPR)
+#define __bertrand_handle_assert(EXPR, MSG) assert(EXPR &&MSG)
 
 #endif
 
