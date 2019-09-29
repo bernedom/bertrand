@@ -17,21 +17,21 @@ inline void assert_handler(bool b) {
 }
 } // namespace bertrand
 
-#define __bertrand_handle_assert(ARG) bertrand::assert_handler((ARG))
+#define __bertrand_handle_assert(EXPR) bertrand::assert_handler((EXPR))
 
 #else
 #include <cassert>
 
-#define __bertrand_handle_assert(ARG) assert(ARG)
+#define __bertrand_handle_assert(EXPR) assert(EXPR)
 
 #endif
 
 #ifndef NDEBUG
-#define require(ARG) __bertrand_handle_assert(ARG)
-#define ensure(ARG) __bertrand_handle_assert(ARG)
-#define invariant(ARG) __bertrand_handle_assert(ARG)
+#define require(EXPR, MSG) __bertrand_handle_assert(EXPR)
+#define ensure(EXPR, MSG) __bertrand_handle_assert(EXPR)
+#define invariant(EXPR, MSG) __bertrand_handle_assert(EXPR)
 #else
-#define require(ARG)
-#define ensure(ARG)
-#define invariant(ARG)
+#define require(EXPR, MSG)
+#define ensure(EXPR, MSG)
+#define invariant(EXPR, MSG)
 #endif
