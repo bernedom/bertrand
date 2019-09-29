@@ -31,7 +31,7 @@ inline void assert_handler(bool b) {
 #define ensure(ARG) __bertrand_handle_assert(ARG)
 #define invariant(ARG) __bertrand_handle_assert(ARG)
 #else
-#define require(ARG) (void(0))
-#define ensure(ARG) (void(0))
-#define invariant(ARG) (void(0))
+#define require(ARG)
+#define ensure(ARG)
+#define invariant(ARG)
 #endif
