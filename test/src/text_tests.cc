@@ -5,5 +5,5 @@
 
 TEST_CASE("GIVEN a contract with a message WHEN the contract fails THEN the "
           "message is passed on") {
-  REQUIRE_THROWS(require(false, "Cannot be false"));
+  REQUIRE_THROWS_WITH(require(false, "Cannot be false"), "Cannot be false");
 }
