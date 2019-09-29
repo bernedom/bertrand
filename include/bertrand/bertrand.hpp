@@ -10,7 +10,7 @@
 #include <exception>
 
 namespace bertrand {
-void assert_handler(bool b) {
+inline void assert_handler(bool b) {
   if (!b) {
     throw(std::exception());
   }

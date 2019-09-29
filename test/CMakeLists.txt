@@ -1,7 +1,11 @@
 cmake_minimum_required(VERSION 3.12)
 
 add_executable(bertrand_tests)
-target_sources(bertrand_tests PRIVATE src/Catch2Main.cc src/bertrand_tests.cc)
+target_sources(bertrand_tests
+               PRIVATE
+               src/Catch2Main.cc
+               src/text_tests.cc
+               src/bertrand_tests.cc)
 
 target_include_directories(
   bertrand_tests
