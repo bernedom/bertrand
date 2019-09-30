@@ -1,6 +1,5 @@
 #pragma once
 
-///@todo add text
 ///@todo add file location
 ///@todo add possibility for delivering stack trace
 
