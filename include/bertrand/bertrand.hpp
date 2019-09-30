@@ -22,6 +22,7 @@
 namespace bertrand {
 inline void assert_handler(bool b, const char *message) {
   if (!b) {
+    // use sprintf mangling here
     throw(std::runtime_error(message));
   }
 }
