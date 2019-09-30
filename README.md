@@ -9,10 +9,11 @@ A C++ header only library providing a trivial implementation for design by contr
 
 #include <bertrand/bertrand.hpp>
 
-int divide(int dividend, int divisor){
+int divide(float dividend, float divisor){
   require(divisor != 0);
-
-  return dividend / divisor;
+  auto result = dividend / divisor;
+  ensure((result * divisor) < )
+  return ;
 }
 
 ```
