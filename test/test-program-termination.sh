@@ -15,7 +15,7 @@ tearDown(){
     fi
 }
 
-testForAbnormalProgrammTerminationInDebugMode(){
+testForAbnormalProgramTerminationInDebugMode(){
     cmake -DCMAKE_BUILD_TYPE=Debug ${ROOT_DIR} -B${BUILD_DIR} -G Ninja > /dev/null
     cmake --build ${BUILD_DIR} --target failing_contract
     assertEquals "build successful" 0 $?
@@ -25,7 +25,7 @@ testForAbnormalProgrammTerminationInDebugMode(){
     assertNotEquals "Executabled terminated non-zero" $? 0
 }
 
-testForNormalProgrammTerminationInReleaseMode(){
+testForNormalProgramTerminationInReleaseMode(){
     cmake  -DCMAKE_BUILD_TYPE=Release ${ROOT_DIR} -B${BUILD_DIR} -G Ninja > /dev/null
     cmake --build ${BUILD_DIR} --target failing_contract
     assertEquals "build successful" 0 $?
@@ -35,5 +35,20 @@ testForNormalProgrammTerminationInReleaseMode(){
     assertEquals "Executabled terminated normally"  0 $?
 }
 
+testForMessageOnProgramTerminationInDebugMode()
+{
+    cmake -DCMAKE_BUILD_TYPE=Debug ${ROOT_DIR} -B${BUILD_DIR} -G Ninja > /dev/null
+    cmake --build ${BUILD_DIR} --target failing_contract
+    assertEquals "build successful" 0 $?
+    assertTrue "Test executable exists" "[ -f "${BUILD_DIR}/test/failing_contract" ]"
+    
+    OUTPUT=$(${BUILD_DIR}/test/failing_contract 2>&1)
+    assertNotEquals "Executabled terminated non-zero" $? 0
+    TEXT=""
+    if [[ $OUTPUT =~ "Cannot be false" ]]; then
+        TEXT="Cannot be false"
+    fi
+    assertEquals "Text is there" "Cannot be false" "${TEXT}"
+}
 
 . shunit2

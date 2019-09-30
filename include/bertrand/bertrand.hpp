@@ -1,37 +1,37 @@
 #pragma once
 
-///@todo add text
 ///@todo add file location
 ///@todo add possibility for delivering stack trace
 
 // asserts as exceptions is a workaround for testing purposes, do not use in
 // production
 #ifdef __BERTRAND_CONTRACTS_ARE_EXCEPTIONS
-#include <exception>
+#include <stdexcept>
 
 namespace bertrand {
-void assert_handler(bool b) {
+inline void assert_handler(bool b, const char *message) {
   if (!b) {
-    throw(std::exception());
+    throw(std::runtime_error(message));
   }
 }
 } // namespace bertrand
 
-#define __bertrand_handle_assert(ARG) bertrand::assert_handler((ARG))
+#define __bertrand_handle_assert(EXPR, MSG)                                    \
+  bertrand::assert_handler((EXPR), MSG)
 
 #else
 #include <cassert>
 
-#define __bertrand_handle_assert(ARG) assert(ARG)
+#define __bertrand_handle_assert(EXPR, MSG) assert(EXPR &&MSG)
 
 #endif
 
 #ifndef NDEBUG
-#define require(ARG) __bertrand_handle_assert(ARG)
-#define ensure(ARG) __bertrand_handle_assert(ARG)
-#define invariant(ARG) __bertrand_handle_assert(ARG)
+#define require(EXPR, MSG) __bertrand_handle_assert(EXPR, MSG)
+#define ensure(EXPR, MSG) __bertrand_handle_assert(EXPR, MSG)
+#define invariant(EXPR, MSG) __bertrand_handle_assert(EXPR, MSG)
 #else
-#define require(ARG) (void(0))
-#define ensure(ARG) (void(0))
-#define invariant(ARG) (void(0))
+#define require(EXPR, MSG)
+#define ensure(EXPR, MSG)
+#define invariant(EXPR, MSG)
 #endif
