@@ -17,31 +17,40 @@
 // asserts as exceptions is a workaround for testing purposes, do not use in
 // production
 #ifdef __BERTRAND_CONTRACTS_ARE_EXCEPTIONS
+#include <cstdio>
 #include <stdexcept>
 
 namespace bertrand {
-inline void assert_handler(bool b, const char *message) {
+inline void assert_handler(bool b, const char *message, const char *file,
+                           int line) {
   if (!b) {
-    // use sprintf mangling here
-    throw(std::runtime_error(message));
+    // directly allocating is not so nice, but at that point something went
+    // wrong anyway
+    char buffer[2048];
+    snprintf(buffer, sizeof(buffer), "%s:%d: %s", file, line, message);
+
+    throw(std::runtime_error(buffer));
   }
 }
 } // namespace bertrand
 
-#define __bertrand_handle_assert(EXPR, MSG)                                    \
-  bertrand::assert_handler((EXPR), MSG)
+#define __bertrand_handle_assert(EXPR, MSG, FILE, LINE)                        \
+  bertrand::assert_handler((EXPR), MSG, FILE, LINE)
 
 #else
 #include <cassert>
 
-#define __bertrand_handle_assert(EXPR, MSG) assert(EXPR &&MSG)
+#define __bertrand_handle_assert(EXPR, MSG, FILE, LINE) assert(EXPR &&MSG)
 
 #endif
 
 #ifndef NDEBUG
-#define require(EXPR, MSG) __bertrand_handle_assert(EXPR, MSG)
-#define ensure(EXPR, MSG) __bertrand_handle_assert(EXPR, MSG)
-#define invariant(EXPR, MSG) __bertrand_handle_assert(EXPR, MSG)
+#define require(EXPR, MSG)                                                     \
+  __bertrand_handle_assert(EXPR, MSG, __FILE__, __LINE__)
+#define ensure(EXPR, MSG)                                                      \
+  __bertrand_handle_assert(EXPR, MSG, __FILE__, __LINE__)
+#define invariant(EXPR, MSG)                                                   \
+  __bertrand_handle_assert(EXPR, MSG, __FILE__, __LINE__)
 #else
 #define require(EXPR, MSG)
 #define ensure(EXPR, MSG)
