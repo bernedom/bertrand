@@ -44,11 +44,29 @@ testForMessageOnProgramTerminationInDebugMode()
     
     OUTPUT=$(${BUILD_DIR}/test/failing_contract 2>&1)
     assertNotEquals "Executabled terminated non-zero" $? 0
-    TEXT=""
-    if [[ $OUTPUT =~ "Cannot be false" ]]; then
-        TEXT="Cannot be false"
+    TEXT=$OUTPUT
+    EXPECTED_TEXT="Cannot be false"
+    if [[ $OUTPUT =~ "${EXPECTED_TEXT}" ]]; then
+        TEXT=$EXPECTED_TEXT
     fi
-    assertEquals "Text is there" "Cannot be false" "${TEXT}"
+    assertEquals "Text is there" "${EXPECTED_TEXT}" "${TEXT}"
+}
+
+testForMessageFileAndLinenumberOnProgramTerminationInDebugMode()
+{
+    cmake -DCMAKE_BUILD_TYPE=Debug ${ROOT_DIR} -B${BUILD_DIR} -G Ninja > /dev/null
+    cmake --build ${BUILD_DIR} --target failing_contract
+    assertEquals "build successful" 0 $?
+    assertTrue "Test executable exists" "[ -f "${BUILD_DIR}/test/failing_contract" ]"
+    
+    OUTPUT=$(${BUILD_DIR}/test/failing_contract 2>&1)
+    assertNotEquals "Executabled terminated non-zero" $? 0
+    TEXT=$OUTPUT
+    EXPECTED_TEXT="${SCRIPT_DIR}/src/failing_contract.cc:4: Cannot be false"
+    if [[ $OUTPUT =~ "${EXPECTED_TEXT}" ]]; then
+        TEXT=$EXPECTED_TEXT
+    fi
+    assertEquals "Text is there" "${EXPECTED_TEXT}" "${TEXT}"
 }
 
 . shunit2
