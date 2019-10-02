@@ -1,6 +1,7 @@
 #include <catch.hpp>
 #include <cstdint>
 #include <limits>
+#include <sstream>
 
 #define __BERTRAND_CONTRACTS_ARE_EXCEPTIONS
 #include <bertrand/bertrand.hpp>
@@ -16,7 +17,10 @@ float divide(float dividend, float divisor) {
 } // namespace
 TEST_CASE("GIVEN a contract with a message WHEN the contract fails THEN the "
           "message is passed on") {
-  REQUIRE_THROWS_WITH(require(false, "Cannot be false"), "Cannot be false");
+  std::stringstream expected;
+  expected << __FILE__ << ":";
+  expected << __LINE__ + 1 << ": Cannot be false";
+  REQUIRE_THROWS_WITH(require(false, "Cannot be false"), expected.str());
 }
 
 TEST_CASE(
