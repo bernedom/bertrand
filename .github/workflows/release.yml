@@ -21,8 +21,18 @@ jobs:
       - name: program-termination-tests
         run: ./test/test-program-termination.sh
 
+  installation-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: dependencies
+        run: sudo apt install shunit2 ninja-build -y
+      - name: installation-tests
+        run: ./test/installation-tests.sh
+
   deploy-to-conan:
-    needs: build
+    needs: [build, installation-tests]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
