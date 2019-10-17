@@ -27,7 +27,9 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: dependencies
-        run: sudo apt install shunit2 ninja-build -y
+        run: sudo apt install shunit2 ninja-build python3 python3-pip python3-setuptools python3-yaml python3-wheel -y
+      - name: python-dependencies
+        run: pip3 install conan
       - name: installation-tests
         run: ./test/installation-tests.sh
 
