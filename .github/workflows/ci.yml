@@ -26,12 +26,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-      - name: dependencies
-        run: sudo apt install shunit2 ninja-build python3 python3-pip python3-setuptools python3-yaml python3-wheel -y
-      - name: python-dependencies
-        run: pip3 install conan
-      - name: installation-tests
-        run: ./test/installation-tests.sh
+      - uses: ./.github/actions/installation-tests
+        with:
+          script: ./test/installation-tests.sh
+        id: installation-tests
 
   deploy-to-conan:
     needs: [build, installation-tests]

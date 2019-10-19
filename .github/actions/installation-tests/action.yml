@@ -1,0 +1,11 @@
+# action.yml
+name: "Installation Tests"
+description: "Runs the installation tests"
+inputs:
+  script:
+    description: "The script to execute"
+    required: true
+
+runs:
+  using: "docker"
+  image: "Dockerfile"
