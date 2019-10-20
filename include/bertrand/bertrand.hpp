@@ -12,7 +12,6 @@
 #pragma once
 
 ///@todo add function to message
-///@todo add expression to message
 ///@todo add possibility for delivering stack trace
 
 // asserts as exceptions is a workaround for testing purposes, do not use in
@@ -27,13 +26,14 @@
 #endif
 
 namespace bertrand {
-inline void assert_handler(bool b, const char *message, const char *file,
-                           int line) {
+inline void assert_handler(bool b, const char *expression, const char *message,
+                           const char *file, int line) {
   if (!b) {
     // directly allocating is not so nice, but at that point something went
     // wrong anyway
     char buffer[2048];
-    snprintf(buffer, sizeof(buffer), "%s:%d: %s", file, line, message);
+    snprintf(buffer, sizeof(buffer), "%s:%d: ('%s') %s", file, line, expression,
+             message);
     fprintf(stderr, "%s\n", buffer);
 #ifdef __BERTRAND_CONTRACTS_ARE_EXCEPTIONS
     throw(std::runtime_error(buffer));
@@ -45,7 +45,7 @@ inline void assert_handler(bool b, const char *message, const char *file,
 } // namespace bertrand
 
 #define __bertrand_handle_assert(EXPR, MSG, FILE, LINE)                        \
-  bertrand::assert_handler((EXPR), MSG, FILE, LINE)
+  bertrand::assert_handler((EXPR), #EXPR, MSG, FILE, LINE)
 
 #ifndef NDEBUG
 #define require(EXPR, MSG)                                                     \
