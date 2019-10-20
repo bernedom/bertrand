@@ -21,8 +21,18 @@ jobs:
       - name: program-termination-tests
         run: ./test/test-program-termination.sh
 
+  installation-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: ./.github/actions/installation-tests
+        with:
+          script: ./test/installation-tests.sh
+        id: installation-tests
+
   deploy-to-conan:
-    needs: build
+    needs: [build, installation-tests]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
