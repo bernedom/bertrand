@@ -4,9 +4,8 @@
 
 TEST_CASE("Assert that tests are run with abort as exceptions") {
 #ifndef __BERTRAND_CONTRACTS_ARE_EXCEPTIONS
-  STATIC_REQUIRE(
-      false,
-      "Tests must be run with #ifndef __BERTRAND_CONTRACTS_ARE_EXCEPTIONS");
+  STATIC_REQUIRE(false);
+  /// Tests must be run with #ifndef __BERTRAND_CONTRACTS_ARE_EXCEPTIONS"
 #endif
 }
 

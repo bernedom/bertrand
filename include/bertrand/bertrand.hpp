@@ -1,5 +1,6 @@
 /**
  * This file is part of "bertrand"
+ * https://github.com/bernedom/bertrand
  * A minimalistic, header only implementation of design by contract for C++
  *
  * As a header only library using this in proprietary software is fine as long
@@ -26,9 +27,9 @@
 #endif
 
 namespace bertrand {
-inline void assert_handler(bool b, const char *expression, const char *message,
-                           const char *file, int line) {
-  if (!b) {
+inline void assert_handler(bool expr, const char *expression,
+                           const char *message, const char *file, int line) {
+  if (!expr) {
     std::stringstream buffer;
     buffer << file << ":" << line << ": ('" << expression << "') " << message
            << "\n";
@@ -42,6 +43,7 @@ inline void assert_handler(bool b, const char *expression, const char *message,
 }
 } // namespace bertrand
 
+/// this forwarding macro is needed to get the correct file and line information
 #define __bertrand_handle_assert(EXPR, MSG, FILE, LINE)                        \
   bertrand::assert_handler((EXPR), #EXPR, MSG, FILE, LINE)
 
