@@ -3,7 +3,6 @@
 #include <limits>
 #include <sstream>
 
-#define __BERTRAND_CONTRACTS_ARE_EXCEPTIONS
 #include <bertrand/bertrand.hpp>
 
 namespace {

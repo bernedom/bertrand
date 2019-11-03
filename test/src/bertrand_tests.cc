@@ -1,7 +1,14 @@
 #include <catch.hpp>
 
-#define __BERTRAND_CONTRACTS_ARE_EXCEPTIONS
 #include <bertrand/bertrand.hpp>
+
+TEST_CASE("Assert that tests are run with abort as exceptions") {
+#ifndef __BERTRAND_CONTRACTS_ARE_EXCEPTIONS
+  STATIC_REQUIRE(
+      false,
+      "Tests must be run with #ifndef __BERTRAND_CONTRACTS_ARE_EXCEPTIONS");
+#endif
+}
 
 TEST_CASE(
     "GIVEN a precondition contract WHEN passed true THEN no assert happens") {
