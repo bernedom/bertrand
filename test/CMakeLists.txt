@@ -25,7 +25,10 @@ target_compile_options(
     $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-Werror>
     $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-pedantic>
     $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-D__BERTRAND_CONTRACTS_ARE_EXCEPTIONS>
-    $<$<CXX_COMPILER_ID:AppleClang>:-D__BERTRAND_CONTRACTS_ARE_EXCEPTIONS>)
+    $<$<CXX_COMPILER_ID:AppleClang>:-D__BERTRAND_CONTRACTS_ARE_EXCEPTIONS>
+    $<$<CXX_COMPILER_ID:AppleClang>:-Werror>
+    $<$<CXX_COMPILER_ID:AppleClang>:-pedantic>
+    $<$<CXX_COMPILER_ID:AppleClang>:-Wall>)
 
 add_executable(failing_contract)
 target_sources(failing_contract PRIVATE src/failing_contract.cc)
