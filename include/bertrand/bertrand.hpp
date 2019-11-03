@@ -14,12 +14,11 @@
 ///@todo add function to message
 ///@todo add possibility for delivering stack trace
 
-// asserts as exceptions is a workaround for testing purposes, do not use in
-// production
-
+#ifndef NDEBUG
 #include <iostream>
 #include <sstream>
-
+// asserts as exceptions is a workaround for testing purposes, do not use in
+// production
 #ifdef __BERTRAND_CONTRACTS_ARE_EXCEPTIONS
 #include <stdexcept>
 #else
@@ -46,7 +45,6 @@ inline void assert_handler(bool b, const char *expression, const char *message,
 #define __bertrand_handle_assert(EXPR, MSG, FILE, LINE)                        \
   bertrand::assert_handler((EXPR), #EXPR, MSG, FILE, LINE)
 
-#ifndef NDEBUG
 #define require(EXPR, MSG)                                                     \
   __bertrand_handle_assert(EXPR, MSG, __FILE__, __LINE__)
 #define ensure(EXPR, MSG)                                                      \
