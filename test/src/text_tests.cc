@@ -19,7 +19,7 @@ TEST_CASE("GIVEN a contract with a message WHEN the contract fails THEN the "
           "message is passed on") {
   std::stringstream expected;
   expected << __FILE__ << ":";
-  expected << __LINE__ + 1 << ": ('false') Cannot be false";
+  expected << __LINE__ + 1 << ": ('false') Cannot be false\n";
   REQUIRE_THROWS_WITH(require(false, "Cannot be false"), expected.str());
 }
 

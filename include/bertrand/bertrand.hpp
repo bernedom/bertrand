@@ -17,7 +17,8 @@
 // asserts as exceptions is a workaround for testing purposes, do not use in
 // production
 
-#include <cstdio>
+#include <iostream>
+#include <sstream>
 
 #ifdef __BERTRAND_CONTRACTS_ARE_EXCEPTIONS
 #include <stdexcept>
@@ -29,14 +30,12 @@ namespace bertrand {
 inline void assert_handler(bool b, const char *expression, const char *message,
                            const char *file, int line) {
   if (!b) {
-    // directly allocating is not so nice, but at that point something went
-    // wrong anyway
-    char buffer[2048];
-    snprintf(buffer, sizeof(buffer), "%s:%d: ('%s') %s", file, line, expression,
-             message);
-    fprintf(stderr, "%s\n", buffer);
+    std::stringstream buffer;
+    buffer << file << ":" << line << ": ('" << expression << "') " << message
+           << "\n";
+    std::cerr << buffer.str();
 #ifdef __BERTRAND_CONTRACTS_ARE_EXCEPTIONS
-    throw(std::runtime_error(buffer));
+    throw std::runtime_error(buffer.str());
 #else
     abort();
 #endif
@@ -55,7 +54,7 @@ inline void assert_handler(bool b, const char *expression, const char *message,
 #define invariant(EXPR, MSG)                                                   \
   __bertrand_handle_assert(EXPR, MSG, __FILE__, __LINE__)
 #else
-#define require(EXPR, MSG)
-#define ensure(EXPR, MSG)
-#define invariant(EXPR, MSG)
+#define require(EXPR, MSG) (static_cast<void>(0))
+#define ensure(EXPR, MSG) (static_cast<void>(0))
+#define invariant(EXPR, MSG) (static_cast<void>(0))
 #endif
