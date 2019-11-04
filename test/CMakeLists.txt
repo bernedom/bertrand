@@ -16,12 +16,19 @@ target_compile_features(bertrand_tests PRIVATE cxx_std_17)
 
 target_compile_options(
   bertrand_tests
-  PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/std:c++17>
-          $<$<CXX_COMPILER_ID:MSVC>:/W4>
-          $<$<CXX_COMPILER_ID:MSVC>:/WX>
-          $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-Wall>
-          $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-Werror>
-          $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-pedantic>)
+  PRIVATE
+    $<$<CXX_COMPILER_ID:MSVC>:/std:c++17>
+    $<$<CXX_COMPILER_ID:MSVC>:/W4>
+    $<$<CXX_COMPILER_ID:MSVC>:/WX>
+    $<$<CXX_COMPILER_ID:MSVC>:/D__BERTRAND_CONTRACTS_ARE_EXCEPTIONS>
+    $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-Wall>
+    $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-Werror>
+    $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-pedantic>
+    $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-D__BERTRAND_CONTRACTS_ARE_EXCEPTIONS>
+    $<$<CXX_COMPILER_ID:AppleClang>:-D__BERTRAND_CONTRACTS_ARE_EXCEPTIONS>
+    $<$<CXX_COMPILER_ID:AppleClang>:-Werror>
+    $<$<CXX_COMPILER_ID:AppleClang>:-pedantic>
+    $<$<CXX_COMPILER_ID:AppleClang>:-Wall>)
 
 add_executable(failing_contract)
 target_sources(failing_contract PRIVATE src/failing_contract.cc)
@@ -32,5 +39,3 @@ target_include_directories(
           $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
 
 add_test(NAME bertrand_tests COMMAND bertrand_tests)
-# add_test(NAME failing_contract COMMAND failing_contract)
-# set_tests_properties(failing_contract PROPERTIES WILL_FAIL TRUE)

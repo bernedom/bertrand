@@ -30,20 +30,21 @@ matrix:
         - mkdir build && cd build && cmake .. -G "Visual Studio 15 2017" -A x64
         - cmake --build . --config Debug
         - ctest -C Debug
+        - cmake --build . --config Release
 
     - os: osx
       osx_image: xcode10.2
       compiler: clang
       # empty matrix eval to avoid pollution
-      env: 
+      env:
         - MATRIX_EVAL=""
 
 before_install:
   - eval "${MATRIX_EVAL}"
 
-script: 
+script:
   - cmake --version
-  - mkdir build && cd build && cmake .. -G Ninja 
+  - mkdir build && cd build && cmake .. -G Ninja
   - cmake --build . --config Debug
   - ctest -C Debug
   - cd ..
