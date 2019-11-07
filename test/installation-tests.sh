@@ -45,6 +45,11 @@ testVersionNumberConsistency()
         GIT_VERSION=$(git describe --tags | grep -E -o '^[0-9]+\.[0-9]+\.[0-9]+')
         assertNotEquals "version in files (${CMAKE_VERSION}) matches already existing release (${GIT_VERSION}):" ${CMAKE_VERSION} ${GIT_VERSION}
     fi
+    
+    for F in $(find ${ROOT_DIR}/include/bertrand -name *.hpp); do
+        FILE_VERSION=$(grep -E 'version [0-9]+\.[0-9]+\.[0-9]+' ${F} | grep -E -o '[0-9]+\.[0-9]+\.[0-9]+')
+        assertEquals "version in header file ${F} does not match cmake version" ${CMAKE_VERSION} ${FILE_VERSION}
+    done
 }
 
 testPureCmakeInstallation(){
