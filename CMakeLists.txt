@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.12)
 project(
   "bertrand"
   VERSION
-    0.0.4
+    0.0.5
     DESCRIPTION
     "A header only c++ library providing functionality for design by contract"
     HOMEPAGE_URL
