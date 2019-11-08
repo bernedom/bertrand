@@ -20,11 +20,9 @@ This action creates a conan package and deploys it to bintray
 
 **Required** The password or API token for bintray. Again use a [secret](https://help.github.com/en/articles/virtual-environments-for-github-actions#creating-and-using-secrets-encrypted-variables) to pass this
 
-
 ### `conan_remote` 
 
 **Required** The remote to push to
-
 
 ## Outputs
 
