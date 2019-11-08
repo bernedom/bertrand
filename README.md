@@ -45,7 +45,7 @@ conan remote add bernedom https://api.bintray.com/conan/bernedom/conan
 
 in the `conanfile.txt` then add
 
-```
+```bash
 [requires]
 bertrand[>0.0 <2.0]@bertrand/stable
 ```
