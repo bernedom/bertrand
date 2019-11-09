@@ -2,6 +2,7 @@
 [![GitHub license](https://img.shields.io/badge/license-LGPL%20v3-blue.svg)](https://raw.githubusercontent.com/bernedom/bertrand/master/LICENSE)
 [![Build Status](https://travis-ci.com/bernedom/bertrand.svg?branch=master)](https://travis-ci.com/bernedom/bertrand)
 [![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/bernedom/bertrand.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/bernedom/bertrand/context:cpp)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4ed8c3ef2e794d238d289493a31d3b28)](https://www.codacy.com/manual/bernedom/bertrand?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=bernedom/bertrand&amp;utm_campaign=Badge_Grade)
 
 # bertrand
 A C++ header only library providing a trivial implementation for design by contract. For a good introduction into design by contract check the [Eiffel Software Explanation](https://www.eiffel.com/values/design-by-contract/introduction/)
@@ -45,7 +46,7 @@ conan remote add bernedom https://api.bintray.com/conan/bernedom/conan
 
 in the `conanfile.txt` then add
 
-```
+```bash
 [requires]
 bertrand[>0.0 <2.0]@bertrand/stable
 ```

@@ -2,7 +2,7 @@
 # file: test/installation-tests.sh
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-ROOT_DIR=$(realpath ${SCRIPT_DIR}/../)
+ROOT_DIR=$(realpath "${SCRIPT_DIR}/../")
 
 setUp(){
     BERTRAND_BUILD_DIR=$(mktemp -d)
@@ -11,28 +11,28 @@ setUp(){
 }
 
 tearDown(){
-    if [ -d ${BERTRAND_BUILD_DIR} ]; then
-        rm -rf ${BERTRAND_BUILD_DIR}
+    if [ -d "${BERTRAND_BUILD_DIR}" ]; then
+        rm -rf "${BERTRAND_BUILD_DIR}"
     fi
     
-    if [ -d ${INSTALL_PATH} ]; then
-        rm -rf ${INSTALL_PATH}
+    if [ -d "${INSTALL_PATH}" ]; then
+        rm -rf "${INSTALL_PATH}"
     fi
     
-    if [ -d ${BUILD_DIR} ]; then
-        rm -rf ${BUILD_DIR}
+    if [ -d "${BUILD_DIR}" ]; then
+        rm -rf "${BUILD_DIR}"
     fi
 }
 
 testVersionNumberConsistency()
 {
     ORIG_DIR=$(pwd)
-    cmake ${ROOT_DIR} -B${BERTRAND_BUILD_DIR} -DBUILD_TESTING=off -G Ninja > /dev/null
-    cd ${BERTRAND_BUILD_DIR}
+    cmake "${ROOT_DIR}" -B"${BERTRAND_BUILD_DIR}" -DBUILD_TESTING=off -G Ninja > /dev/null
+    cd "${BERTRAND_BUILD_DIR}"
     CMAKE_VERSION=$(cmake --system-information|grep -E "VERSION:STATIC"|grep -E -o '[0-9]+\.[0-9]+\.[0-9]+')
-    cd ${ROOT_DIR};
+    cd "${ROOT_DIR}"
     CONAN_VERSION=$(python3 -c 'from conanfile import bertrandConan; print(bertrandConan.version)')
-    cd ${ORIG_DIR}
+    cd "${ORIG_DIR}"
     GIT_VERSION_EXACT=$(git describe --tags | grep -E -o '^[0-9]+\.[0-9]+\.[0-9]+$')
     CHANGELOG_VERSION=$(sed -n -E '/## [0-9]+\.[0-9]+\.[0-9]+/p' "${ROOT_DIR}/CHANGELOG.md" | head -1 | grep -E -o '[0-9]+\.[0-9]+\.[0-9]+')
     
@@ -54,25 +54,25 @@ testVersionNumberConsistency()
 
 testPureCmakeInstallation(){
     # install bertrand
-    cmake ${ROOT_DIR} -B${BERTRAND_BUILD_DIR} -DCMAKE_INSTALL_PREFIX:PATH=${INSTALL_PATH} -DBUILD_TESTING=off -G Ninja
-    cmake --build ${BERTRAND_BUILD_DIR} --config Release --target install
+    cmake "${ROOT_DIR}" -B"${BERTRAND_BUILD_DIR}" -DCMAKE_INSTALL_PREFIX:PATH="${INSTALL_PATH}" -DBUILD_TESTING=off -G Ninja
+    cmake --build "${BERTRAND_BUILD_DIR}" --config Release --target install
     assertEquals "Installation build successful" 0 $?
-    cmake ${ROOT_DIR}/test/installation-test -B${BUILD_DIR} -DCMAKE_INSTALL_PREFIX:PATH=${INSTALL_PATH} -G Ninja
-    cmake --build ${BUILD_DIR}
+    cmake "${ROOT_DIR}/test/installation-test" -B"${BUILD_DIR}" -DCMAKE_INSTALL_PREFIX:PATH="${INSTALL_PATH}" -G Ninja
+    cmake --build "${BUILD_DIR}"
     assertEquals "build against installation successful" 0 $?
     
 }
 
 testCpackInstallation(){
     # install bertrand
-    cmake ${ROOT_DIR} -B${BERTRAND_BUILD_DIR} -DCPACK_PACKAGE_FILE_NAME=install-bertrand -DBUILD_TESTING=off -G Ninja
-    cmake --build ${BERTRAND_BUILD_DIR} --config Release --target package
+    cmake "${ROOT_DIR}" -B"${BERTRAND_BUILD_DIR}" -DCPACK_PACKAGE_FILE_NAME=install-bertrand -DBUILD_TESTING=off -G Ninja
+    cmake --build "${BERTRAND_BUILD_DIR}" --config Release --target package
     assertEquals "Installation build successful" 0 $?
-    ${BERTRAND_BUILD_DIR}/install-bertrand.sh --prefix=${INSTALL_PATH} --skip-license --exclude-subdir
+    "${BERTRAND_BUILD_DIR}/install-bertrand.sh" --prefix="${INSTALL_PATH}" --skip-license --exclude-subdir
     assertEquals "Installation script successful" 0 $?
     
-    cmake ${ROOT_DIR}/test/installation-test -B${BUILD_DIR} -DCMAKE_INSTALL_PREFIX:PATH=${INSTALL_PATH} -G Ninja
-    cmake --build ${BUILD_DIR}
+    cmake "${ROOT_DIR}/test/installation-test" -B"${BUILD_DIR}" -DCMAKE_INSTALL_PREFIX:PATH="${INSTALL_PATH}" -G Ninja
+    cmake --build "${BUILD_DIR}"
     assertEquals "build against installation successful" 0 $?
     
 }
@@ -83,13 +83,13 @@ testConanInstallation()
     # preliminary cleanup
     conan remove -f *@bertrand/testing
     
-    conan create ${ROOT_DIR} bertrand/testing
+    conan create "${ROOT_DIR}" bertrand/testing
     assertEquals "Conan installation build successful" 0 $?
-    conan install -if ${BUILD_DIR} ${ROOT_DIR}/test/conan-installation-test
+    conan install -if "${BUILD_DIR}" "${ROOT_DIR}/test/conan-installation-test"
     assertEquals "Conan installation successful" 0 $?
     
-    cmake ${ROOT_DIR}/test/conan-installation-test -B${BUILD_DIR} -G Ninja
-    cmake --build ${BUILD_DIR}
+    cmake "${ROOT_DIR}/test/conan-installation-test" -B"${BUILD_DIR}" -G Ninja
+    cmake --build "${BUILD_DIR}"
     assertEquals "build against installation successful" 0 $?
     
     # cleanup
