@@ -12,28 +12,28 @@ TEST_CASE("Assert that tests are run with abort as exceptions") {
 TEST_CASE(
     "GIVEN a precondition contract WHEN passed true THEN no assert happens") {
 
-  REQUIRE_NOTHROW(require(true, ""));
+  REQUIRE_NOTHROW(Require(true, ""));
 }
 
 TEST_CASE(
     "GIVEN a precondition contract WHEN passed false THEN assert happens") {
-  REQUIRE_THROWS(require(false, ""));
+  REQUIRE_THROWS(Require(false, ""));
 }
 
 TEST_CASE(
     "GIVEN a postcondition contract WHEN passed true THEN no assert happens") {
-  REQUIRE_NOTHROW(ensure(true, ""));
+  REQUIRE_NOTHROW(Ensure(true, ""));
 }
 
 TEST_CASE(
     "GIVEN a postcondition contract WHEN passed false THEN  assert happens") {
-  REQUIRE_THROWS(ensure(false, ""));
+  REQUIRE_THROWS(Ensure(false, ""));
 }
 TEST_CASE(
-    "GIVEN an invariant contract WHEN passed true THEN no assert happens") {
-  REQUIRE_NOTHROW(invariant(true, ""));
+    "GIVEN an Invariant contract WHEN passed true THEN no assert happens") {
+  REQUIRE_NOTHROW(Invariant(true, ""));
 }
 
-TEST_CASE("GIVEN a invariant contract WHEN passed false THEN  assert happens") {
-  REQUIRE_THROWS(invariant(false, ""));
+TEST_CASE("GIVEN a Invariant contract WHEN passed false THEN  assert happens") {
+  REQUIRE_THROWS(Invariant(false, ""));
 }

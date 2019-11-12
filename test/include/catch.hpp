@@ -1379,7 +1379,7 @@ namespace Catch {
     };
 #endif
 
-    // TBD: Should we use `strnlen` to ensure that we don't go out of the buffer,
+    // TBD: Should we use `strnlen` to Ensure that we don't go out of the buffer,
     //      while keeping string semantics?
     template<int SZ>
     struct StringMaker<char[SZ]> {

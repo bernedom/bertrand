@@ -47,14 +47,14 @@ inline void assert_handler(bool expr, const char *expression,
 #define __bertrand_handle_assert(EXPR, MSG, FILE, LINE)                        \
   bertrand::assert_handler((EXPR), #EXPR, MSG, FILE, LINE)
 
-#define require(EXPR, MSG)                                                     \
+#define Require(EXPR, MSG)                                                     \
   __bertrand_handle_assert(EXPR, MSG, __FILE__, __LINE__)
-#define ensure(EXPR, MSG)                                                      \
+#define Ensure(EXPR, MSG)                                                      \
   __bertrand_handle_assert(EXPR, MSG, __FILE__, __LINE__)
-#define invariant(EXPR, MSG)                                                   \
+#define Invariant(EXPR, MSG)                                                   \
   __bertrand_handle_assert(EXPR, MSG, __FILE__, __LINE__)
 #else
-#define require(EXPR, MSG) (static_cast<void>(0))
-#define ensure(EXPR, MSG) (static_cast<void>(0))
-#define invariant(EXPR, MSG) (static_cast<void>(0))
+#define Require(EXPR, MSG) (static_cast<void>(0))
+#define Ensure(EXPR, MSG) (static_cast<void>(0))
+#define Invariant(EXPR, MSG) (static_cast<void>(0))
 #endif
