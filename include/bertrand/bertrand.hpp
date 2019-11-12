@@ -20,7 +20,7 @@
 #include <sstream>
 // asserts as exceptions is a workaround for testing purposes, do not use in
 // production
-#ifdef __BERTRAND_CONTRACTS_ARE_EXCEPTIONS
+#ifdef BERTRAND_CONTRACTS_ARE_EXCEPTIONS
 #include <stdexcept>
 #else
 #include <cstdlib>
@@ -34,7 +34,7 @@ inline void assert_handler(bool expr, const char *expression,
     buffer << file << ":" << line << ": ('" << expression << "') " << message
            << "\n";
     std::cerr << buffer.str();
-#ifdef __BERTRAND_CONTRACTS_ARE_EXCEPTIONS
+#ifdef BERTRAND_CONTRACTS_ARE_EXCEPTIONS
     throw std::runtime_error(buffer.str());
 #else
     abort();

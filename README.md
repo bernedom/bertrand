@@ -25,7 +25,7 @@ Currently the keywords `require`, `ensure` and `invariant` are implemented. A fa
 
 Contracts are enabled unless the `NDEBUG` compiler flag is set. 
 
-In order to facilitate testing of the contract functionality contracts are throwing an exception instead of calling abort, if the preprocessor-flag `__BERTRAND_CONTRACTS_ARE_EXCEPTIONS` is set. 
+In order to facilitate testing of the contract functionality contracts are throwing an exception instead of calling abort, if the preprocessor-flag `BERTRAND_CONTRACTS_ARE_EXCEPTIONS` is set. 
 
 ## Building and Installation
 
