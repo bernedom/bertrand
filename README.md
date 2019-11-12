@@ -13,19 +13,19 @@ An illustrative example:
 #include <bertrand/bertrand.hpp>
 
 float divide(float dividend, float divisor) {
-  require(divisor != 0, "No division by zero");
+  Require(divisor != 0, "No division by zero");
   auto result = dividend / divisor;
-  ensure(dividend - result * divisor < std::numeric_limits<float>::epsilon(),
+  Ensure(dividend - result * divisor < std::numeric_limits<float>::epsilon(),
          "Division is correct");
   return result;
 
 ```
 
-Currently the keywords `require`, `ensure` and `invariant` are implemented. A failing contract results in immediate programm termination by an `abort`. The contract message is printed to stderr. 
+Currently the keywords `Require`, `Ensure` and `Invariant` are implemented. A failing contract results in immediate programm termination by an `abort`. The contract message is printed to stderr. 
 
 Contracts are enabled unless the `NDEBUG` compiler flag is set. 
 
-In order to facilitate testing of the contract functionality contracts are throwing an exception instead of calling abort, if the preprocessor-flag `__BERTRAND_CONTRACTS_ARE_EXCEPTIONS` is set. 
+In order to facilitate testing of the contract functionality contracts are throwing an exception instead of calling abort, if the preprocessor-flag `BERTRAND_CONTRACTS_ARE_EXCEPTIONS` is set. 
 
 ## Building and Installation
 

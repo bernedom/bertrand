@@ -8,9 +8,9 @@
 
 namespace {
 float divide(float dividend, float divisor) {
-  require(divisor != 0, "No division by zero");
+  Require(divisor != 0, "No division by zero");
   auto result = dividend / divisor;
-  ensure(dividend - result * divisor < std::numeric_limits<float>::epsilon(),
+  Ensure(dividend - result * divisor < std::numeric_limits<float>::epsilon(),
          "Division is correct");
   return result;
 }
@@ -20,7 +20,7 @@ TEST_CASE("GIVEN a contract with a message WHEN the contract fails THEN the "
   std::stringstream expected;
   expected << __FILE__ << ":";
   expected << __LINE__ + 1 << ": ('false') Cannot be false\n";
-  REQUIRE_THROWS_WITH(require(false, "Cannot be false"), expected.str());
+  REQUIRE_THROWS_WITH(Require(false, "Cannot be false"), expected.str());
 }
 
 TEST_CASE(
@@ -47,7 +47,7 @@ TEST_CASE("GIVEN a contract WHEN it fails THEN message is printed to stderr") {
   std::stringstream expected;
   expected << __FILE__ << ":";
   expected << __LINE__ + 1 << ": ('false') Cannot be false\n";
-  REQUIRE_THROWS_WITH(require(false, "Cannot be false"), expected.str());
+  REQUIRE_THROWS_WITH(Require(false, "Cannot be false"), expected.str());
   REQUIRE(expected.str().compare(new_stderr.str()) == 0);
   std::cerr.rdbuf(old_stderr);
 }
