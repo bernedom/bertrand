@@ -1,5 +1,5 @@
 /**
- * This file is part of "bertrand" version 0.0.5
+ * This file is part of "bertrand" version 0.0.6
  * https://github.com/bernedom/bertrand
  * A minimalistic, header only implementation of design by contract for C++
  *
