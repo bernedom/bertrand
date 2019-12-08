@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.6
+
+*   Cmake linting
+
 ## 0.0.5
 
 *   Added changelog
