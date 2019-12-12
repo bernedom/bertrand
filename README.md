@@ -21,9 +21,9 @@ float divide(float dividend, float divisor) {
 
 ```
 
-Currently the keywords `Require`, `Ensure` and `Invariant` are implemented. A failing contract results in immediate programm termination by an `abort`. The contract message is printed to stderr. 
+The contract related keywords `Require`, `Ensure` and `Invariant` are implemented. A failing contract results in immediate programm termination by an `abort`. The contract message is printed to stderr. 
 
-Contracts are enabled unless the `NDEBUG` compiler flag is set. 
+By default contracts are enabled unless the `NDEBUG` compiler flag is set. Contracts can be force enabled or disabled by passing the compiler flag `BERTRAND_ENABLE_CONTRACTS` or `BERTRAND_DISABLE_CONTRACTS` passing both will lead to a compiler error. 
 
 In order to facilitate testing of the contract functionality contracts are throwing an exception instead of calling abort, if the preprocessor-flag `BERTRAND_CONTRACTS_ARE_EXCEPTIONS` is set. 
 
