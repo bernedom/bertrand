@@ -19,6 +19,10 @@
 #define BERTRAND_ENABLE_CONTRACTS
 #endif
 
+#if defined(BERTRAND_DISABLE_CONTRACTS) && defined(BERTRAND_ENABLE_CONTRACTS)
+#undef BERTRAND_ENABLE_CONTRACTS
+#endif
+
 #ifdef BERTRAND_ENABLE_CONTRACTS
 #include <iostream>
 #include <sstream>

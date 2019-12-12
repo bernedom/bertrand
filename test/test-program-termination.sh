@@ -76,7 +76,6 @@ testForAbnormalProgramTerminationInReleaseModeWhenContractsForceEnabled() {
     assertNotEquals "Executabled terminated non-zero" $? 0
 }
 
-
 testForAbnormalProgramTerminationInUnspecifiedModeWhenContractsForceEnabledAndNDEBUGIsDefined() {
 
     cmake "${ROOT_DIR}" -B"${BUILD_DIR}" -DCMAKE_CXX_FLAGS="-DNDEBUG -DBERTRAND_ENABLE_CONTRACTS" -G Ninja >/dev/null
@@ -90,7 +89,7 @@ testForAbnormalProgramTerminationInUnspecifiedModeWhenContractsForceEnabledAndND
 
 testForNormalProgramTerminationInDebugModeWhenContractsForceDisabled() {
 
-    cmake -DCMAKE_BUILD_TYPE=Deubg "${ROOT_DIR}" -B"${BUILD_DIR}" -DCMAKE_CXX_FLAGS="-DBERTRAND_DISABLE_CONTRACTS" -G Ninja >/dev/null
+    cmake -DCMAKE_BUILD_TYPE=Debug "${ROOT_DIR}" -B"${BUILD_DIR}" -DCMAKE_CXX_FLAGS="-DBERTRAND_DISABLE_CONTRACTS" -G Ninja >/dev/null
     cmake --build "${BUILD_DIR}" --target failing_contract
     assertEquals "build successful" 0 $?
     assertTrue "Test executable exists" "[ -f "${BUILD_DIR}/test/failing_contract" ]"
