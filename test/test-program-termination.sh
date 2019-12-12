@@ -98,4 +98,12 @@ testForNormalProgramTerminationInDebugModeWhenContractsForceDisabled() {
     assertEquals "Executabled terminated normally" 0 $?
 }
 
+testForCompilationFailureWhenContractsForceEnabledAndForceDisabledTogether() {
+
+    cmake -DCMAKE_BUILD_TYPE=Debug "${ROOT_DIR}" -B"${BUILD_DIR}" -DCMAKE_CXX_FLAGS="-DBERTRAND_DISABLE_CONTRACTS -DBERTRAND_ENABLE_CONTRACTS" -G Ninja >/dev/null
+    cmake --build "${BUILD_DIR}" --target failing_contract
+    assertNotEquals "build fails" 0 $?
+
+}
+
 . shunit2

@@ -15,12 +15,16 @@
 ///@todo add function to message
 ///@todo add possibility for delivering stack trace
 
-#ifndef NDEBUG
-#define BERTRAND_ENABLE_CONTRACTS
+// fail compilation of contracts are force-enabled and force-disabled at the
+// same time
+#if defined(BERTRAND_DISABLE_CONTRACTS) && defined(BERTRAND_ENABLE_CONTRACTS)
+static_assert(false,
+              "Cannot force enable and disable contracts at the same time");
 #endif
 
-#if defined(BERTRAND_DISABLE_CONTRACTS) && defined(BERTRAND_ENABLE_CONTRACTS)
-#undef BERTRAND_ENABLE_CONTRACTS
+#if !defined(NDEBUG) && !defined(BERTRAND_ENABLE_CONTRACTS) &&                 \
+    !defined(BERTRAND_DISABLE_CONTRACTS)
+#define BERTRAND_ENABLE_CONTRACTS
 #endif
 
 #ifdef BERTRAND_ENABLE_CONTRACTS
