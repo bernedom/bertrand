@@ -38,6 +38,22 @@ jobs:
         run: cmake --build . --config Release
         working-directory: ./build
 
+  build-macosx:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: dependencies
+        run: brew install shunit2 ninja
+      - name: cmake
+        run: mkdir build && cd build && cmake ..
+      - name: build
+        run: cmake --build ./build
+      - name: ctest
+        run: cd build && ctest ./build
+      - name: program-termination-tests
+        run: ./test/test-program-termination.sh
+
   installation-tests:
     runs-on: ubuntu-latest
 
@@ -49,7 +65,7 @@ jobs:
         id: installation-tests
 
   deploy-to-conan:
-    needs: [build, installation-tests, build-windows]
+    needs: [build, build-windows, build-macosx, installation-tests]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
