@@ -16,6 +16,10 @@
 ///@todo add possibility for delivering stack trace
 
 #ifndef NDEBUG
+#define BERTRAND_ENABLE_CONTRACTS
+#endif
+
+#ifdef BERTRAND_ENABLE_CONTRACTS
 #include <iostream>
 #include <sstream>
 // asserts as exceptions is a workaround for testing purposes, do not use in
