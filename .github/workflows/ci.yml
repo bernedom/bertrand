@@ -1,8 +1,10 @@
 name: CI
 
 on:
-  - push
-  - pull_request
+  push:
+  pull_request:
+  release:
+    types: [published]
 
 jobs:
   build:
@@ -69,7 +71,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - uses: ./.github/actions/deploy-conan-to-bintray
+      - name: publish-to-bintray
+        if: github.event.action != 'published'
+
+        uses: ./.github/actions/deploy-conan-to-bintray
         with:
           conan_package: bertrand
           conan_channel: bertrand/unstable
