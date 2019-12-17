@@ -49,6 +49,7 @@ jobs:
           if [ "${{ matrix.compiler }}" != "" ]; then
             echo "::set-env name=CXX::${{ matrix.compiler }}"
           fi
+        shell: bash
 
       - name: make-build-dir
         run: mkdir build
