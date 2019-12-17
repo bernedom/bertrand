@@ -70,6 +70,7 @@ jobs:
         id: installation-tests
 
   deploy-to-conan:
+    if: github.ref == 'master'
     needs: [ci, installation-tests]
     runs-on: ubuntu-latest
     steps:
