@@ -26,15 +26,18 @@ jobs:
         if: runner.os == 'macOS'
         run: brew install shunit2 ninja
 
-      - name: dependencies (windows)
-        if: runner.os == 'Windows'
+      # - name: dependencies (windows)
+      #   if: runner.os == 'Windows'
 
+      - name: make-build-dir
+        run: mkdir build
       - name: cmake-configure-debug
-        run: cmake -B build -DCMAKE_BUILD_TYPE=Debug
+        run: cmake -DCMAKE_BUILD_TYPE=Debug ..
+        working-directory: ./build
       - name: build-debug
         run: cmake --build ./build --config Debug
       - name: ctest
-        run: ctest
+        run: ctest -C Debug
         working-directory: ./build
 
       - name: cmake-configure-release
@@ -45,39 +48,6 @@ jobs:
       - name: program-termination-tests
         if: runner.os == 'Linux' || runner.os == 'macOS'
         run: ./test/test-program-termination.sh
-
-  # build-windows:
-  #   runs-on: windows-latest
-
-  #   steps:
-  #     - uses: actions/checkout@v1
-  #     - name: cmake
-  #       run: mkdir build; cd build; cmake .. -G "Visual Studio 16 2019" -A x64
-  #     - name: build
-  #       run: cmake --build . --config Debug
-  #       working-directory: ./build
-  #     - name: ctest
-  #       run: ctest -C Debug
-  #       working-directory: ./build
-  #     - name: build-release
-  #       run: cmake --build . --config Release
-  #       working-directory: ./build
-
-  # build-macosx:
-  #   runs-on: macos-latest
-
-  #   steps:
-  #     - uses: actions/checkout@v1
-  #     - name: dependencies
-  #       run: brew install shunit2 ninja
-  #     - name: cmake
-  #       run: mkdir build && cd build && cmake ..
-  #     - name: build
-  #       run: cmake --build ./build
-  #     - name: ctest
-  #       run: cd build && ctest ./build
-  #     - name: program-termination-tests
-  #       run: ./test/test-program-termination.sh
 
   installation-tests:
     runs-on: ubuntu-latest
