@@ -8,13 +8,23 @@ on:
 
 jobs:
   ci:
-    name: ${{ matrix.os }}
+    name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
 
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        name: [ubuntu-gcc-7, macos-appleclang-11, windows-msvc-19]
+        # os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          - name: ubuntu-gcc-7
+            os: ubuntu-latest
+
+          - name: macos-appleclang-11
+            os: macos-latest
+
+          - name: windows-msvc-19
+            os: windows-latest
 
     steps:
       - uses: actions/checkout@v1
