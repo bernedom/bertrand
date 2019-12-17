@@ -23,7 +23,7 @@ jobs:
 
           - name: ubuntu-clang-6
             os: ubuntu-latest
-            compiler: clang-6.0
+            compiler: clang++-6.0
 
           - name: macos-appleclang-11
             os: macos-latest
