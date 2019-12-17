@@ -56,15 +56,15 @@ inline void assert_handler(bool expr, const char *expression,
 } // namespace bertrand
 
 /// this forwarding macro is needed to get the correct file and line information
-#define __bertrand_handle_assert(EXPR, MSG, FILE, LINE)                        \
+#define bertrand_handle_assert_impl(EXPR, MSG, FILE, LINE)                     \
   bertrand::assert_handler((EXPR), #EXPR, MSG, FILE, LINE)
 
 #define Require(EXPR, MSG)                                                     \
-  __bertrand_handle_assert(EXPR, MSG, __FILE__, __LINE__)
+  bertrand_handle_assert_impl(EXPR, MSG, __FILE__, __LINE__)
 #define Ensure(EXPR, MSG)                                                      \
-  __bertrand_handle_assert(EXPR, MSG, __FILE__, __LINE__)
+  bertrand_handle_assert_impl(EXPR, MSG, __FILE__, __LINE__)
 #define Invariant(EXPR, MSG)                                                   \
-  __bertrand_handle_assert(EXPR, MSG, __FILE__, __LINE__)
+  bertrand_handle_assert_impl(EXPR, MSG, __FILE__, __LINE__)
 #else
 #define Require(EXPR, MSG) (static_cast<void>(0))
 #define Ensure(EXPR, MSG) (static_cast<void>(0))
