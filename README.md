@@ -1,4 +1,5 @@
 [![GitHub Releases](https://img.shields.io/github/release/bernedom/bertrand.svg)](https://github.com/bernedom/bertrand/releases)
+[![Download](https://api.bintray.com/packages/bernedom/conan/bertrand%3Abertrand/images/download.svg)](https://bintray.com/bernedom/conan/bertrand%3Abertrand/_latestVersion)
 [![GitHub license](https://img.shields.io/badge/license-LGPL%20v3-blue.svg)](https://raw.githubusercontent.com/bernedom/bertrand/master/LICENSE)
 [![Build Status](https://github.com/bernedom/bertrand/workflows/CI/badge.svg?branch=master)](https://github.com/bernedom/bertrand/actions)
 [![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/bernedom/bertrand.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/bernedom/bertrand/context:cpp)
