@@ -7,53 +7,68 @@ on:
     types: [published]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  ci:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: true
+      matrix:
+        name:
+          [ubuntu-gcc-7, ubuntu-clang-6, macos-appleclang-11, windows-msvc-19]
+        include:
+          - name: ubuntu-gcc-7
+            os: ubuntu-latest
+            compiler: g++-7
+
+          - name: ubuntu-clang-6
+            os: ubuntu-latest
+            compiler: clang++-6.0
+
+          - name: macos-appleclang-11
+            os: macos-latest
+
+          - name: windows-msvc-19
+            os: windows-latest
 
     steps:
       - uses: actions/checkout@v1
-      - name: dependencies
+      - name: dependencies (Linux)
+        if: runner.os == 'Linux'
         run: sudo apt install shunit2 ninja-build -y
-      - name: cmake
-        run: mkdir build && cd build && cmake ..
-      - name: build
-        run: cmake --build ./build
-      - name: ctest
-        run: cd build && ctest ./build
-      - name: program-termination-tests
-        run: ./test/test-program-termination.sh
 
-  build-windows:
-    runs-on: windows-latest
+      - name: dependecies (macos)
+        if: runner.os == 'macOS'
+        run: brew install shunit2 ninja
 
-    steps:
-      - uses: actions/checkout@v1
-      - name: cmake
-        run: mkdir build; cd build; cmake .. -G "Visual Studio 16 2019" -A x64
-      - name: build
-        run: cmake --build . --config Debug
+      # - name: dependencies (windows)
+      #   if: runner.os == 'Windows'
+
+      - name: set-compiler-env
+        run: |
+          if [ "${{ matrix.compiler }}" != "" ]; then
+            echo "::set-env name=CXX::${{ matrix.compiler }}"
+          fi
+        shell: bash
+
+      - name: make-build-dir
+        run: mkdir build
+      - name: cmake-configure-debug
+        run: cmake -DCMAKE_BUILD_TYPE=Debug ..
         working-directory: ./build
+      - name: build-debug
+        run: cmake --build ./build --config Debug
       - name: ctest
         run: ctest -C Debug
         working-directory: ./build
+
+      - name: cmake-configure-release
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release
       - name: build-release
-        run: cmake --build . --config Release
-        working-directory: ./build
+        run: cmake --build ./build --config Release
 
-  build-macosx:
-    runs-on: macos-latest
-
-    steps:
-      - uses: actions/checkout@v1
-      - name: dependencies
-        run: brew install shunit2 ninja
-      - name: cmake
-        run: mkdir build && cd build && cmake ..
-      - name: build
-        run: cmake --build ./build
-      - name: ctest
-        run: cd build && ctest ./build
       - name: program-termination-tests
+        if: runner.os == 'Linux' || runner.os == 'macOS'
         run: ./test/test-program-termination.sh
 
   installation-tests:
@@ -67,7 +82,8 @@ jobs:
         id: installation-tests
 
   deploy-to-conan:
-    needs: [build, build-windows, build-macosx, installation-tests]
+    if: github.ref == 'master'
+    needs: [ci, installation-tests]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
