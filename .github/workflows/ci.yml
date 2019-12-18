@@ -82,13 +82,14 @@ jobs:
         id: installation-tests
 
   deploy-to-conan:
-    if: github.ref == 'master'
     needs: [ci, installation-tests]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - name: dbgprint
+        run: echo ${{ github.ref }}
       - name: publish-unstable-to-bintray
-        if: github.event.action != 'published'
+        if: github.event.action != 'published' && github.ref == 'refs/heads/master'
         uses: ./.github/actions/deploy-conan-to-bintray
         with:
           conan_package: bertrand
