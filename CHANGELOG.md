@@ -2,7 +2,8 @@
 
 ## 0.0.7
 
-*   Removing missed double underscores 
+*   Removing double underscores
+*   Unit-Tests work in release mode as well
 
 ## 0.0.6
 
