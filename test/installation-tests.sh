@@ -96,6 +96,39 @@ testConanInstallation()
     conan remove -f *@bertrand/testing
 }
 
+testDisablingOfBertrandBuildingTests()
+{
+    cmake "${ROOT_DIR}" -B"${BERTRAND_BUILD_DIR}" -DCMAKE_INSTALL_PREFIX:PATH="${INSTALL_PATH}" -DBUILD_TESTING=on -DBERTRAND_BUILD_TESTING=off -G Ninja
+    cmake --build "${BERTRAND_BUILD_DIR}" --config Release
+    CURRENT_DIR=$(pwd)
+    cd "${BERTRAND_BUILD_DIR}"
+    NUMBER_OF_TESTS=$(ctest -N -o | grep -E '^Total Tests: [0-9]+')
+    cd "${CURRENT_DIR}"
+    assertEquals "No tests found" "Total Tests: 0" "${NUMBER_OF_TESTS}"
+}
+
+testGlobalDisablingOfTests()
+{
+    cmake "${ROOT_DIR}" -B"${BERTRAND_BUILD_DIR}" -DCMAKE_INSTALL_PREFIX:PATH="${INSTALL_PATH}" -DBUILD_TESTING=off -DBERTRAND_BUILD_TESTING=on -G Ninja
+    cmake --build "${BERTRAND_BUILD_DIR}" --config Release
+    CURRENT_DIR=$(pwd)
+    cd "${BERTRAND_BUILD_DIR}"
+    NUMBER_OF_TESTS=$(ctest -N -o | grep -E '^Total Tests: [0-9]+')
+    cd "${CURRENT_DIR}"
+    assertEquals "No tests found" "Total Tests: 0" "${NUMBER_OF_TESTS}"
+}
+
+
+testAllTestsEnabled()
+{
+    cmake "${ROOT_DIR}" -B"${BERTRAND_BUILD_DIR}" -DCMAKE_INSTALL_PREFIX:PATH="${INSTALL_PATH}" -DBUILD_TESTING=on -DBERTRAND_BUILD_TESTING=on -G Ninja
+    cmake --build "${BERTRAND_BUILD_DIR}" --config Release
+    CURRENT_DIR=$(pwd)
+    cd "${BERTRAND_BUILD_DIR}"
+    NUMBER_OF_TESTS=$(ctest -N -o | grep -E '^Total Tests: [0-9]+')
+    cd "${CURRENT_DIR}"
+    assertNotEquals "Tests found" "Total Tests: 0" "${NUMBER_OF_TESTS}"
+}
 
 # Load shUnit2.
 . shunit2

@@ -2,17 +2,19 @@ cmake_minimum_required(VERSION 3.12)
 
 project(
   "bertrand"
-  VERSION 0.0.7
+  VERSION 0.0.8
   DESCRIPTION
     "A header only c++ library providing functionality for design by contract"
   HOMEPAGE_URL "https://github.com/bernedom/bertrand")
+
+include(GNUInstallDirs)
+include(CTest)
+option(BERTRAND_BUILD_TESTING "enable testing for bertrand; Requires global BUILD_TESTING to be set" ON)
 
 add_library(${PROJECT_NAME} INTERFACE)
 # add alias so the project can be uses with add_subdirectory
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
-include(GNUInstallDirs)
-include(CTest)
 
 # Adding the install interface generator expression makes sure that the include
 # files are installed to the proper location (provided by GNUInstallDirs)
@@ -23,7 +25,7 @@ target_include_directories(
 
 target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_17)
 
-if(BUILD_TESTING)
+if(BUILD_TESTING AND BERTRAND_BUILD_TESTING)
   add_subdirectory(test)
 endif()
 
