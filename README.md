@@ -22,7 +22,7 @@ float divide(float dividend, float divisor) {
 
 ```
 
-The contract related keywords `Require`, `Ensure` and `Invariant` are implemented. A failing contract results in immediate programm termination by an `abort`. The contract message is printed to stderr. 
+The contract related keywords `Require`, `Ensure` and `Invariant` are implemented. A failing contract results in immediate program termination by an `abort`. The contract message is printed to stderr. 
 
 By default contracts are enabled unless the `NDEBUG` compiler flag is set. Contracts can be force enabled or disabled by passing the compiler flag `BERTRAND_ENABLE_CONTRACTS` or `BERTRAND_DISABLE_CONTRACTS` passing both will lead to a compiler error. 
 
@@ -36,6 +36,16 @@ In order to facilitate testing of the contract functionality contracts are throw
 mkdir build && cd build
 cmake .. -DCMAKE_INSTALL_PREFIX:PATH=${HOME}/local-install
 cmake --build . --target install
+```
+### cmake sub-directory
+
+bertrand can be included using `add_subdirectory` if it cannot be installed into a system. 
+
+If bertrand is included and the `EXCLUDE_FROM_ALL` flag is set, bertrand test can be disabled by setting the `BERTRAND_BUILD_TESTING` option
+```cmake
+  set(BERTRAND_BUILD_TESTING OFF)
+  add_subdirectory(${bertrand_SOURCE_DIR} ${bertrand_BINARY_DIR}
+                   EXCLUDE_FROM_ALL)
 ```
 
 ### conan.io 
