@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.9
+
+*   Add logo and repository card 
+
 ## 0.0.8
 
 *   Add cmake option `BERTRAND_BUILD_TESTING` (default `ON`) to disable bertrand tests if used with `add_subdirectory`
