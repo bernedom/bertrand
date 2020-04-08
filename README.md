@@ -1,3 +1,5 @@
+<img align="right" src="bertrand_logo.png">
+
 [![GitHub Releases](https://img.shields.io/github/release/bernedom/bertrand.svg)](https://github.com/bernedom/bertrand/releases)
 [![Download](https://api.bintray.com/packages/bernedom/conan/bertrand%3Abertrand/images/download.svg)](https://bintray.com/bernedom/conan/bertrand%3Abertrand/_latestVersion)
 [![GitHub license](https://img.shields.io/badge/license-LGPL%20v3-blue.svg)](https://raw.githubusercontent.com/bernedom/bertrand/master/LICENSE)
