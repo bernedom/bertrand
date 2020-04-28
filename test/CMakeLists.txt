@@ -26,6 +26,7 @@ target_compile_options(
 )
 
 add_executable(failing_contract)
+target_compile_features(failing_contract PRIVATE cxx_std_17)
 target_sources(failing_contract PRIVATE src/failing_contract.cc)
 
 target_include_directories(

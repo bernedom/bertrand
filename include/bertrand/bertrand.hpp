@@ -39,6 +39,12 @@ static_assert(false,
 #endif
 
 namespace bertrand {
+  template<typename... Args>
+inline std::stringstream& createmsg(std::stringstream& ss, Args const&... args ) {
+  (ss << ... << args) << "\n";
+  return ss;
+
+}
 inline void assert_handler(bool expr, const char *expression,
                            const char *message, const char *file, int line) {
   if (!expr) {
@@ -56,17 +62,17 @@ inline void assert_handler(bool expr, const char *expression,
 } // namespace bertrand
 
 /// this forwarding macro is needed to get the correct file and line information
-#define bertrand_handle_assert_impl(EXPR, MSG, FILE, LINE)                     \
+#define bertrand_handle_assert_impl(EXPR, MSG, FILE, LINE, ...)                     \
   bertrand::assert_handler((EXPR), #EXPR, MSG, FILE, LINE)
 
-#define Require(EXPR, MSG)                                                     \
-  bertrand_handle_assert_impl(EXPR, MSG, __FILE__, __LINE__)
-#define Ensure(EXPR, MSG)                                                      \
-  bertrand_handle_assert_impl(EXPR, MSG, __FILE__, __LINE__)
-#define Invariant(EXPR, MSG)                                                   \
-  bertrand_handle_assert_impl(EXPR, MSG, __FILE__, __LINE__)
+#define Require(EXPR, MSG, ...)                                                     \
+  bertrand_handle_assert_impl(EXPR, MSG, __FILE__, __LINE__, __VA_ARGS__)
+#define Ensure(EXPR, MSG, ...)                                                      \
+  bertrand_handle_assert_impl(EXPR, MSG, __FILE__, __LINE__, __VA_ARGS__)
+#define Invariant(EXPR, MSG, ...)                                                   \
+  bertrand_handle_assert_impl(EXPR, MSG, __FILE__, __LINE__, __VA_ARGS__)
 #else
-#define Require(EXPR, MSG) (static_cast<void>(0))
-#define Ensure(EXPR, MSG) (static_cast<void>(0))
-#define Invariant(EXPR, MSG) (static_cast<void>(0))
+#define Require(EXPR, MSG, ...) (static_cast<void>(0))
+#define Ensure(EXPR, MSG, ...) (static_cast<void>(0))
+#define Invariant(EXPR, MSG, ...) (static_cast<void>(0))
 #endif
