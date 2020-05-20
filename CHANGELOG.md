@@ -2,6 +2,7 @@
 
 ## 0.0.9
 
+*   Contracts take variable number of arguments as message
 *   Add logo and repository card 
 
 ## 0.0.8

@@ -24,7 +24,10 @@ float divide(float dividend, float divisor) {
 
 ```
 
-The contract related keywords `Require`, `Ensure` and `Invariant` are implemented. A failing contract results in immediate program termination by an `abort`. The contract message is printed to stderr. 
+The contract related keywords `Require`, `Ensure` and `Invariant` are implemented. A failing contract results in immediate program termination by an `abort`. The contract message is printed to stderr. Passing multiple values to the contract for additional debug information is possible as long as the type is supported by the stream operator `<<`
+```cpp
+Require(false, "Something is not right: ", someVariable, " and ", anotherVariable)
+```
 
 By default contracts are enabled unless the `NDEBUG` compiler flag is set. Contracts can be force enabled or disabled by passing the compiler flag `BERTRAND_ENABLE_CONTRACTS` or `BERTRAND_DISABLE_CONTRACTS` passing both will lead to a compiler error. 
 
