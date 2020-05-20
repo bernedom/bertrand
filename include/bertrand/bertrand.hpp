@@ -39,12 +39,18 @@ static_assert(false,
 #endif
 
 namespace bertrand {
+
+template<typename... Args>
 inline void assert_handler(bool expr, const char *expression,
-                           const char *message, const char *file, int line) {
+                           const char *file, int line, const char *message, const Args&... args) {
   if (!expr) {
     std::stringstream buffer;
-    buffer << file << ":" << line << ": ('" << expression << "') " << message
-           << "\n";
+    
+    buffer << file << ":" << line << ": ('" << expression << "') " << message;
+    if constexpr( sizeof...(args) > 0){
+      (buffer << ... << args);
+    }
+    buffer << "\n";
     std::cerr << buffer.str();
 #ifdef BERTRAND_CONTRACTS_ARE_EXCEPTIONS
     throw std::runtime_error(buffer.str());
@@ -56,17 +62,17 @@ inline void assert_handler(bool expr, const char *expression,
 } // namespace bertrand
 
 /// this forwarding macro is needed to get the correct file and line information
-#define bertrand_handle_assert_impl(EXPR, MSG, FILE, LINE)                     \
-  bertrand::assert_handler((EXPR), #EXPR, MSG, FILE, LINE)
+#define bertrand_handle_assert_impl(EXPR, FILE, LINE,  ...)                     \
+  bertrand::assert_handler((EXPR), #EXPR, FILE, LINE, __VA_ARGS__)
 
-#define Require(EXPR, MSG)                                                     \
-  bertrand_handle_assert_impl(EXPR, MSG, __FILE__, __LINE__)
-#define Ensure(EXPR, MSG)                                                      \
-  bertrand_handle_assert_impl(EXPR, MSG, __FILE__, __LINE__)
-#define Invariant(EXPR, MSG)                                                   \
-  bertrand_handle_assert_impl(EXPR, MSG, __FILE__, __LINE__)
+#define Require(EXPR, ...)                                                     \
+  bertrand_handle_assert_impl(EXPR, __FILE__, __LINE__,   __VA_ARGS__)
+#define Ensure(EXPR, ...)                                                      \
+  bertrand_handle_assert_impl(EXPR,  __FILE__, __LINE__,  __VA_ARGS__)
+#define Invariant(EXPR,  ...)                                                   \
+  bertrand_handle_assert_impl(EXPR, __FILE__, __LINE__, __VA_ARGS__)
 #else
-#define Require(EXPR, MSG) (static_cast<void>(0))
-#define Ensure(EXPR, MSG) (static_cast<void>(0))
-#define Invariant(EXPR, MSG) (static_cast<void>(0))
+#define Require(EXPR, ...) (static_cast<void>(0))
+#define Ensure(EXPR,  ...) (static_cast<void>(0))
+#define Invariant(EXPR,  ...) (static_cast<void>(0))
 #endif
