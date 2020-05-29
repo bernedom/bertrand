@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.10
+
+*   Including bertrand as a subdirectory in cmake disables building the tests
+
 ## 0.0.9
 
 *   Contracts take variable number of arguments as message
