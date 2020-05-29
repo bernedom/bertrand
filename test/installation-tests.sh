@@ -130,5 +130,17 @@ testAllTestsEnabled()
     assertNotEquals "Tests found" "Total Tests: 0" "${NUMBER_OF_TESTS}"
 }
 
+testUsageAsSubdirectory() {
+    # install SI
+    cmake ${ROOT_DIR}/test/installation-test-subdirectory -B${BUILD_DIR} -DCMAKE_BUILD_TYPE=Release
+    cmake --build ${BUILD_DIR}
+    assertEquals "build against installation successful" 0 $?
+    cd ${BUILD_DIR}
+    NUMBER_OF_TESTS=$(ctest -N -o | grep -E '^Total Tests: [0-9]+')
+    cd "${CURRENT_DIR}"
+    assertEquals "Tests found" "Total Tests: 0" "${NUMBER_OF_TESTS}"
+    
+}
+
 # Load shUnit2.
 . shunit2
