@@ -9,9 +9,16 @@ project(
 
 include(GNUInstallDirs)
 include(CTest)
+
+if(CMAKE_PROJECT_NAME STREQUAL ${PROJECT_NAME})
+  set(BERTRAND_IS_ROOT_PROJECT TRUE)
+else()
+  set(BERTRAND_IS_ROOT_PROJECT FALSE)
+endif()
+
 option(BERTRAND_BUILD_TESTING
        "enable testing for bertrand; Requires global BUILD_TESTING to be set"
-       ON)
+       ${BERTRAND_IS_ROOT_PROJECT})
 
 add_library(${PROJECT_NAME} INTERFACE)
 # add alias so the project can be uses with add_subdirectory
