@@ -35,11 +35,13 @@ jobs:
       - uses: actions/checkout@v1
       - name: dependencies (Linux)
         if: runner.os == 'Linux'
-        run: sudo apt install shunit2 ninja-build -y
+        run: |
+          sudo apt install shunit2 ninja-build python3-setuptools python3-pip -y
+          sudo pip3 install conan
 
       - name: dependecies (macos)
         if: runner.os == 'macOS'
-        run: brew install shunit2 ninja
+        run: brew install shunit2 ninja conan
 
       # - name: dependencies (windows)
       #   if: runner.os == 'Windows'
