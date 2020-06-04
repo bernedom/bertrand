@@ -3,6 +3,7 @@
 ## 0.0.10
 
 *   Including bertrand as a subdirectory in cmake disables building the tests
+*   Catch2 is retrieved with conan and no longer directly in the source tree
 
 ## 0.0.9
 

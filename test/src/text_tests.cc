@@ -1,4 +1,5 @@
-#include <catch.hpp>
+
+#include <catch2/catch.hpp>
 
 #include <iostream>
 #include <limits>
@@ -52,24 +53,30 @@ TEST_CASE("GIVEN a contract WHEN it fails THEN message is printed to stderr") {
   std::cerr.rdbuf(old_stderr);
 }
 
-TEST_CASE("GIVEN a contract AND contract has a variadic message WHEN it fails THEN message is printed to stderr") {
+TEST_CASE("GIVEN a contract AND contract has a variadic message WHEN it fails "
+          "THEN message is printed to stderr") {
   std::stringstream new_stderr;
   auto old_stderr = std::cerr.rdbuf(new_stderr.rdbuf());
   std::stringstream expected;
   expected << __FILE__ << ":";
   expected << __LINE__ + 1 << ": ('false') Cannot be false with an argument\n";
-  REQUIRE_THROWS_WITH(Require(false, "Cannot be false ", "with an argument"), expected.str());
+  REQUIRE_THROWS_WITH(Require(false, "Cannot be false ", "with an argument"),
+                      expected.str());
   REQUIRE(expected.str().compare(new_stderr.str()) == 0);
   std::cerr.rdbuf(old_stderr);
 }
 
-TEST_CASE("GIVEN a contract AND contract has a variadic of multiple types WHEN it fails THEN message is printed to stderr") {
+TEST_CASE("GIVEN a contract AND contract has a variadic of multiple types WHEN "
+          "it fails THEN message is printed to stderr") {
   std::stringstream new_stderr;
   auto old_stderr = std::cerr.rdbuf(new_stderr.rdbuf());
   std::stringstream expected;
   expected << __FILE__ << ":";
-  expected << __LINE__ + 1 << ": ('false') Cannot be false with an argument 99 123.11\n";
-  REQUIRE_THROWS_WITH(Require(false, "Cannot be false ", "with an argument ", 99, " ", 123.11), expected.str());
+  expected << __LINE__ + 1
+           << ": ('false') Cannot be false with an argument 99 123.11\n";
+  REQUIRE_THROWS_WITH(
+      Require(false, "Cannot be false ", "with an argument ", 99, " ", 123.11),
+      expected.str());
   REQUIRE(expected.str().compare(new_stderr.str()) == 0);
   std::cerr.rdbuf(old_stderr);
 }
