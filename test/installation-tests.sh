@@ -54,10 +54,10 @@ testVersionNumberConsistency()
 
 testPureCmakeInstallation(){
     # install bertrand
-    cmake "${ROOT_DIR}" -B"${BERTRAND_BUILD_DIR}" -DCMAKE_INSTALL_PREFIX:PATH="${INSTALL_PATH}" -DBUILD_TESTING=off -G Ninja
+    cmake "${ROOT_DIR}" -B"${BERTRAND_BUILD_DIR}" -DCMAKE_INSTALL_PREFIX:PATH="${INSTALL_PATH}" -DBUILD_TESTING=off -G Ninja > /dev/null
     cmake --build "${BERTRAND_BUILD_DIR}" --config Release --target install
     assertEquals "Installation build successful" 0 $?
-    cmake "${ROOT_DIR}/test/installation-test" -B"${BUILD_DIR}" -DCMAKE_INSTALL_PREFIX:PATH="${INSTALL_PATH}" -G Ninja
+    cmake "${ROOT_DIR}/test/installation-test" -B"${BUILD_DIR}" -DCMAKE_INSTALL_PREFIX:PATH="${INSTALL_PATH}" -G Ninja > /dev/null
     cmake --build "${BUILD_DIR}"
     assertEquals "build against installation successful" 0 $?
     
@@ -65,7 +65,7 @@ testPureCmakeInstallation(){
 
 testCpackInstallation(){
     # install bertrand
-    cmake "${ROOT_DIR}" -B"${BERTRAND_BUILD_DIR}" -DCPACK_PACKAGE_FILE_NAME=install-bertrand -DBUILD_TESTING=off -G Ninja
+    cmake "${ROOT_DIR}" -B"${BERTRAND_BUILD_DIR}" -DCPACK_PACKAGE_FILE_NAME=install-bertrand -DBUILD_TESTING=off -G Ninja > /dev/null
     cmake --build "${BERTRAND_BUILD_DIR}" --config Release --target package
     assertEquals "Installation build successful" 0 $?
     "${BERTRAND_BUILD_DIR}/install-bertrand.sh" --prefix="${INSTALL_PATH}" --skip-license --exclude-subdir
@@ -88,7 +88,7 @@ testConanInstallation()
     conan install -if "${BUILD_DIR}" "${ROOT_DIR}/test/conan-installation-test"
     assertEquals "Conan installation successful" 0 $?
     
-    cmake "${ROOT_DIR}/test/conan-installation-test" -B"${BUILD_DIR}" -G Ninja
+    cmake "${ROOT_DIR}/test/conan-installation-test" -B"${BUILD_DIR}" -DCMAKE_BUILD_TYPE=Release -G Ninja > /dev/null
     cmake --build "${BUILD_DIR}"
     assertEquals "build against installation successful" 0 $?
     
@@ -109,7 +109,7 @@ testDisablingOfBertrandBuildingTests()
 
 testGlobalDisablingOfTests()
 {
-    cmake "${ROOT_DIR}" -B"${BERTRAND_BUILD_DIR}" -DCMAKE_INSTALL_PREFIX:PATH="${INSTALL_PATH}" -DBUILD_TESTING=off -DBERTRAND_BUILD_TESTING=on -G Ninja
+    cmake "${ROOT_DIR}" -B"${BERTRAND_BUILD_DIR}" -DCMAKE_INSTALL_PREFIX:PATH="${INSTALL_PATH}" -DBUILD_TESTING=off -DBERTRAND_BUILD_TESTING=on -DCMAKE_BUILD_TYPE=Debug -G Ninja > /dev/null
     cmake --build "${BERTRAND_BUILD_DIR}" --config Release
     CURRENT_DIR=$(pwd)
     cd "${BERTRAND_BUILD_DIR}"
@@ -121,7 +121,7 @@ testGlobalDisablingOfTests()
 
 testAllTestsEnabled()
 {
-    cmake "${ROOT_DIR}" -B"${BERTRAND_BUILD_DIR}" -DCMAKE_INSTALL_PREFIX:PATH="${INSTALL_PATH}" -DBUILD_TESTING=on -DBERTRAND_BUILD_TESTING=on -G Ninja
+    cmake "${ROOT_DIR}" -B"${BERTRAND_BUILD_DIR}" -DCMAKE_INSTALL_PREFIX:PATH="${INSTALL_PATH}" -DBUILD_TESTING=on -DBERTRAND_BUILD_TESTING=on -DCMAKE_BUILD_TYPE=Debug -G Ninja 
     cmake --build "${BERTRAND_BUILD_DIR}" --config Release
     CURRENT_DIR=$(pwd)
     cd "${BERTRAND_BUILD_DIR}"
@@ -132,7 +132,7 @@ testAllTestsEnabled()
 
 testUsageAsSubdirectory() {
     # install SI
-    cmake "${ROOT_DIR}/test/installation-test-subdirectory" -B"${BUILD_DIR}" -DCMAKE_BUILD_TYPE=Release
+    cmake "${ROOT_DIR}/test/installation-test-subdirectory" -B"${BUILD_DIR}" -DCMAKE_BUILD_TYPE=Release > /dev/null
     cmake --build "${BUILD_DIR}"
     assertEquals "build against installation successful" 0 $?
     cd "${BUILD_DIR}"

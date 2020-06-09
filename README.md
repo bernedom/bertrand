@@ -21,6 +21,7 @@ float divide(float dividend, float divisor) {
   Ensure(dividend - result * divisor < std::numeric_limits<float>::epsilon(),
          "Division is correct");
   return result;
+}
 
 ```
 
@@ -35,7 +36,9 @@ In order to facilitate testing of the contract functionality contracts are throw
 
 ## Building and Installation
 
-### cmake
+To build the unit tests the [Catch2](https://github.com/catchorg/Catch2) unit testing framework is needed. It is retrieved with [conan.io](https://conan.io/)
+
+### cmake installation
 
 ```bash
 mkdir build && cd build
