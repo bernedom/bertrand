@@ -3,7 +3,7 @@ from conans import ConanFile, CMake
 
 class bertrandConan(ConanFile):
     name = "bertrand"
-    version = "0.0.10"
+    version = "0.0.11"
     license = "LGPLv3"
     author = "Dominik Berner <dominik.berner+bertrand-conan@gmail.com"
     url = "https://github.com/bernedom/bertrand"
