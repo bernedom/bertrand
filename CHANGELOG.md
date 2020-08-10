@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.11
+
+*   If bertrand is built from within conan the conanbuildinfo provided by conan will be used instead of getting it from github
+
 ## 0.0.10
 
 *   Including bertrand as a subdirectory in cmake disables building the tests
