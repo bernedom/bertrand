@@ -58,7 +58,7 @@ testForMessageFileAndLinenumberOnProgramTerminationInDebugMode() {
     OUTPUT=$("${BUILD_DIR}/test/bin/failing_contract" 2>&1)
     assertNotEquals "Executabled terminated non-zero" $? 0
     TEXT=$OUTPUT
-    EXPECTED_TEXT="${SCRIPT_DIR}/src/failing_contract.cc:4: ('false') Cannot be false"
+    EXPECTED_TEXT="Assert at: ${SCRIPT_DIR}/src/failing_contract.cc:4: Require ('false') Cannot be false"
     if [[ $OUTPUT =~ "${EXPECTED_TEXT}" ]]; then
         TEXT=$EXPECTED_TEXT
     fi
