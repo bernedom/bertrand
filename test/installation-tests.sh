@@ -30,13 +30,10 @@ testVersionNumberConsistency()
     cmake "${ROOT_DIR}" -B"${BERTRAND_BUILD_DIR}" -DBUILD_TESTING=off -G Ninja > /dev/null
     cd "${BERTRAND_BUILD_DIR}"
     CMAKE_VERSION=$(cmake --system-information|grep -E "VERSION:STATIC"|grep -E -o '[0-9]+\.[0-9]+\.[0-9]+')
-    cd "${ROOT_DIR}"
-    CONAN_VERSION=$(python3 -c 'from conanfile import bertrandConan; print(bertrandConan.version)')
     cd "${ORIG_DIR}"
     GIT_VERSION_EXACT=$(git describe --tags | grep -E -o '^[0-9]+\.[0-9]+\.[0-9]+$')
     CHANGELOG_VERSION=$(sed -n -E '/## [0-9]+\.[0-9]+\.[0-9]+/p' "${ROOT_DIR}/CHANGELOG.md" | head -1 | grep -E -o '[0-9]+\.[0-9]+\.[0-9]+')
     
-    assertEquals "version in cmake (${CMAKE_VERSION}) does not match conan version (${CONAN_VERSION})" "${CMAKE_VERSION}" "${CONAN_VERSION}"
     assertEquals "version in changelog (${CHANGELOG_VERSION}) does not match cmake version (${CMAKE_VERSION})" "${CHANGELOG_VERSION}" "${CMAKE_VERSION}"
     
     if [ "${GIT_VERSION_EXACT}" != "" ]; then
@@ -121,7 +118,7 @@ testGlobalDisablingOfTests()
 
 testAllTestsEnabled()
 {
-    cmake "${ROOT_DIR}" -B"${BERTRAND_BUILD_DIR}" -DCMAKE_INSTALL_PREFIX:PATH="${INSTALL_PATH}" -DBUILD_TESTING=on -DBERTRAND_BUILD_TESTING=on -DCMAKE_BUILD_TYPE=Debug -G Ninja 
+    cmake "${ROOT_DIR}" -B"${BERTRAND_BUILD_DIR}" -DCMAKE_INSTALL_PREFIX:PATH="${INSTALL_PATH}" -DBUILD_TESTING=on -DBERTRAND_BUILD_TESTING=on -DCMAKE_BUILD_TYPE=Debug -G Ninja
     cmake --build "${BERTRAND_BUILD_DIR}" --config Release
     CURRENT_DIR=$(pwd)
     cd "${BERTRAND_BUILD_DIR}"
