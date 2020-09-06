@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.12 
+
+*   Contract type "Require", "Ensure" or "Invariant" is included in message
+*   conanfile.py pulls version out of CMakeLists
+*   Linting conanfile.py, cmake object is only generated once
+
 ## 0.0.11
 
 *   If bertrand is built from within conan the conanbuildinfo provided by conan will be used instead of getting it from github
