@@ -36,7 +36,7 @@
 
 ## 0.0.6
 
-*   Compiler flag `BERTRAND_ENABLE_CONTRACTS` and `BERTRAND_DISABLE_CONTRACTS` for forced enabled/diasabled contracts. 
+*   Compiler flag `BERTRAND_ENABLE_CONTRACTS` and `BERTRAND_DISABLE_CONTRACTS` for forced enabled/disabled contracts. 
 *   Cmake linting
 
 ## 0.0.5

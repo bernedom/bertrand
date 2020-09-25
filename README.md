@@ -69,7 +69,7 @@ bertrand[>0.0 <2.0]
 
 #### Early access and nightly builds
 
-Development builds and early acces versions are available at bintray: https://api.bintray.com/conan/bernedom/conan
+Development builds and early acces versions are available at [bintray](https://api.bintray.com/conan/bernedom/conan).
 
 ```bash
 conan remote add bernedom https://api.bintray.com/conan/bernedom/conan
