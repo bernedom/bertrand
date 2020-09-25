@@ -58,13 +58,24 @@ If bertrand is included and the `EXCLUDE_FROM_ALL` flag is set, bertrand test ca
 
 ### conan.io 
 
-bertrand is available from bintray 
+bertrand is available from [ConanCenter](https://conan.io/center/)
+
+in the `conanfile.txt` then add
+
+```bash
+[requires]
+bertrand[>0.0 <2.0]
+```
+
+#### Early access and nightly builds
+
+Development builds and early acces versions are available at bintray: https://api.bintray.com/conan/bernedom/conan
+
 ```bash
 conan remote add bernedom https://api.bintray.com/conan/bernedom/conan
 ```
 
-in the `conanfile.txt` then add
-
+in the `conanfile.txt` att the following. use `@bertrand\unstable` for development builds
 ```bash
 [requires]
 bertrand[>0.0 <2.0]@bertrand/stable

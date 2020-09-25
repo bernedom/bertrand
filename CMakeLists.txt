@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.12)
 
 project(
   "bertrand"
-  VERSION 0.0.12
+  VERSION 0.0.13
   DESCRIPTION
     "A header only c++ library providing functionality for design by contract"
   HOMEPAGE_URL "https://github.com/bernedom/bertrand")
@@ -53,8 +53,8 @@ write_basic_package_version_file(
 
 configure_package_config_file(
   "${PROJECT_SOURCE_DIR}/cmake/${PROJECT_NAME}Config.cmake.in"
-  "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake" INSTALL_DESTINATION
-  ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake)
+  "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+  INSTALL_DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake)
 
 install(
   EXPORT ${PROJECT_NAME}_Targets
