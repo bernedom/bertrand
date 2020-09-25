@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.13
+
+*   Update Catch2 to version 2.13.1
+*   Update documentation with with hint about ConanCenter
+
 ## 0.0.12 
 
 *   Contract type "Require", "Ensure" or "Invariant" is included in message
@@ -31,7 +36,7 @@
 
 ## 0.0.6
 
-*   Compiler flag `BERTRAND_ENABLE_CONTRACTS` and `BERTRAND_DISABLE_CONTRACTS` for forced enabled/diasabled contracts. 
+*   Compiler flag `BERTRAND_ENABLE_CONTRACTS` and `BERTRAND_DISABLE_CONTRACTS` for forced enabled/disabled contracts. 
 *   Cmake linting
 
 ## 0.0.5
