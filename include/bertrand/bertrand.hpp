@@ -40,6 +40,20 @@ static_assert(false,
 
 namespace bertrand {
 
+/// struct to check if value is contained in a list of values. i.e. to check if
+/// a value is valid for an enum
+template <typename T> struct find {
+
+  explicit find(const T &value) : value_{value} {}
+
+  template <typename... Args> bool in(const Args... args) {
+    return (... || (args == value_));
+  }
+
+private:
+  const T &value_;
+};
+
 template <typename... Args>
 inline void assert_handler(bool expr, const char *expression, const char *file,
                            int line, const char *type, const char *message,

@@ -2,6 +2,7 @@
 
 ## 0.0.13
 
+*   Add function to search for a value in a list of values that are known at compile time
 *   Update Catch2 to version 2.13.1
 *   Update documentation with with hint about ConanCenter
 
