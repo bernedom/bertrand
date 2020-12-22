@@ -44,9 +44,10 @@ namespace bertrand {
 /// a value is valid for an enum
 template <typename T> struct find {
 
-  explicit find(const T &value) : value_{value} {}
+  explicit constexpr find(const T &value) noexcept : value_{value} {}
 
-  template <typename... Args> bool in(const Args... args) {
+  template <typename... Args>
+  constexpr bool in(const Args &... args) const noexcept {
     return (... || (args == value_));
   }
 
