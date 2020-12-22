@@ -34,6 +34,28 @@ By default contracts are enabled unless the `NDEBUG` compiler flag is set. Contr
 
 In order to facilitate testing of the contract functionality contracts are throwing an exception instead of calling abort, if the preprocessor-flag `BERTRAND_CONTRACTS_ARE_EXCEPTIONS` is set. 
 
+## Extended helpers for more complicated tests
+
+Bertrand provides functionality to check if a value is matched against a predefined set of values. For example to check if a raw variable can be casted into an enum. (Casting from an to enums is a code smell, but especially when dealing with data from low-level firmware written in C or assembly this might be required)
+
+```cpp
+#include <bertrand/bertrand.hpp>
+enum class Color { Red, Green, Blue };
+
+Color toColor(int raw_value) {
+  Require(bertrand::find(static_cast<Color>(raw_value))
+              .in(Color::Red, Color::Green, Color::Blue),
+          "raw_value is a valid color");
+  return static_cast<Color>(raw_value);
+}
+
+...
+
+toColor(0); // Passes
+toColor(5); // Fails with a contract
+
+```
+
 ## Building and Installation
 
 To build the unit tests the [Catch2](https://github.com/catchorg/Catch2) unit testing framework is needed. It is retrieved with [conan.io](https://conan.io/)

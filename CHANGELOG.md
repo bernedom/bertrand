@@ -2,12 +2,13 @@
 
 ## 0.0.13
 
+*   Add function to search for a value in a list of values that are known at compile time
 *   Update Catch2 to version 2.13.1
-*   Update documentation with with hint about ConanCenter
+*   Update documentation with hint about ConanCenter
 
 ## 0.0.12 
 
-*   Contract type "Require", "Ensure" or "Invariant" is included in message
+*   Contract type "Require", "Ensure" or "Invariant" is included in the contract-message
 *   conanfile.py pulls version out of CMakeLists
 *   Linting conanfile.py, cmake object is only generated once
 
@@ -17,12 +18,12 @@
 
 ## 0.0.10
 
-*   Including bertrand as a subdirectory in cmake disables building the tests
+*   Including bertrand as a sub directory in cmake disables building the tests
 *   Catch2 is retrieved with conan and no longer directly in the source tree
 
 ## 0.0.9
 
-*   Contracts take variable number of arguments as message
+*   Contracts take variable number of arguments for the contract-message
 *   Add logo and repository card 
 
 ## 0.0.8
