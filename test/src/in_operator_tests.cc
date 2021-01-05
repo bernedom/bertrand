@@ -2,8 +2,6 @@
 
 #include <bertrand/bertrand.hpp>
 
-#include <vector>
-
 TEST_CASE("GIVEN_a_value_WHEN_tested_against_a_list_of_values_AND_list_"
           "contains_searched_value_THEN_result_is_true") {
 
