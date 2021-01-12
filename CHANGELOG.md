@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.14
+
+*   Rename branch `master` to `main`
+
 ## 0.0.13
 
 *   Add function to search for a value in a list of values that are known at compile time
