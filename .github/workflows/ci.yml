@@ -91,7 +91,7 @@ jobs:
       - name: dbgprint
         run: echo ${{ github.ref }}
       - name: publish-unstable-to-bintray
-        if: github.event.action != 'published' && github.ref == 'refs/heads/master'
+        if: github.event.action != 'published' && github.ref == 'refs/heads/main'
         uses: ./.github/actions/deploy-conan-to-bintray
         with:
           conan_package: bertrand
