@@ -32,8 +32,9 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_BINARY_DIR})
 find_package(Catch2 REQUIRED)
 
 add_executable(bertrand_tests)
-target_sources(bertrand_tests PRIVATE src/Catch2Main.cc src/text_tests.cc
-               src/bertrand_tests.cc src/in_operator_tests.cc)
+target_sources(
+  bertrand_tests PRIVATE src/Catch2Main.cc src/text_tests.cc
+                         src/bertrand_tests.cc src/in_operator_tests.cc)
 
 target_include_directories(
   bertrand_tests PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
@@ -64,5 +65,25 @@ target_sources(failing_contract PRIVATE src/failing_contract.cc)
 target_include_directories(
   failing_contract PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
                            $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
+
+add_executable(stacktrace-test)
+target_compile_features(stacktrace-test PRIVATE cxx_std_17)
+target_sources(stacktrace-test PRIVATE stacktrace-test/src/main.cpp)
+
+target_include_directories(
+  stacktrace-test PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+                          $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
+
+target_compile_options(
+  stacktrace-test
+  PRIVATE
+    $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-fpic>
+    $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-export-dynamic>
+    $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-rdynamic>
+    $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-g>
+    $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-Wall>
+    $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-Werror>
+    $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-pedantic>
+)
 
 add_test(NAME bertrand_tests COMMAND bertrand_tests)
