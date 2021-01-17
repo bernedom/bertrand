@@ -81,6 +81,11 @@ target_compile_options(
     $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-Werror>
     $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-pedantic>
 )
-target_link_options(stacktrace-test PRIVATE "-export-dynamic")
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+  target_link_options(
+    stacktrace-test PRIVATE
+    $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-export-dynamic>)
+endif()
 
 add_test(NAME bertrand_tests COMMAND bertrand_tests)
