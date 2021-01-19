@@ -49,6 +49,7 @@ static_assert(false, "Cannot enable and disable stacktrace at the same time");
 
 #include <dlfcn.h> // for dladdr
 #include <execinfo.h>
+#include <regex>
 #include <string>
 #include <unistd.h>
 
@@ -72,49 +73,36 @@ static inline void print_stacktrace() {
 
   // allocate string which will be filled with the demangled function name
   size_t funcnamesize = 256;
-  char *funcname = (char *)malloc(funcnamesize);
+  char *funcname = new char[funcnamesize];
 
   // iterate over the returned symbol lines. skip the first, it is the
   // address of this function.
+  // std::regex tokenizer_regex{"(.+)\\((.+)\\+(0x[0-9]+)\\)\\[(.+)\\]" };
+  std::regex tokenizer_regex{"(.+)\\((.+)\\+(0x[a-f0-9]+)\\)(.+)"};
+
   for (int i = 1; i < addrlen; i++) {
-    char *begin_name = 0, *begin_offset = 0, *end_offset = 0;
 
-    // find parentheses and +address offset surrounding the mangled name:
-    // ./module(function+0x15c) [0x8048a6d]
-    // todo use <regex>
-    for (char *p = symbollist[i]; *p; ++p) {
-      if (*p == '(')
-        begin_name = p;
-      else if (*p == '+')
-        begin_offset = p;
-      else if (*p == ')' && begin_offset) {
-        end_offset = p;
-        break;
-      }
-    }
-
-    if (begin_name && begin_offset && end_offset && begin_name < begin_offset) {
-      *begin_name++ = '\0';
-      *begin_offset++ = '\0';
-      *end_offset = '\0';
-
-      // mangled name is now in [begin_name, begin_offset) and caller
-      // offset in [begin_offset, end_offset). now apply
-      // __cxa_demangle():
+    std::smatch matches;
+    std::string str(symbollist[i]);
+    if (std::regex_search(str, matches, tokenizer_regex)) {
+      const std::string module_name = matches[1].str();
+      const std::string mangled_name = matches[2].str();
+      const std::string offset = matches[3].str();
+      const std::string address = matches[4].str();
 
       int status;
-      char *ret =
-          abi::__cxa_demangle(begin_name, funcname, &funcnamesize, &status);
+      char *ret = abi::__cxa_demangle(mangled_name.c_str(), funcname,
+                                      &funcnamesize, &status);
       if (status == 0) {
         funcname = ret; // use possibly realloc()-ed string
-        std::cerr << "  " << symbollist[i] << " : " << funcname << "+"
-                  << begin_offset << "\n";
+        std::cerr << "  " << module_name << " : " << funcname << "+" << offset
+                  << "\n";
 
       } else {
         // demangling failed. Output function name as a C function with
         // no arguments.
-        std::cerr << "  " << symbollist[i] << " : " << begin_name << "()+"
-                  << begin_offset << "\n";
+        std::cerr << "  " << module_name << " : " << mangled_name << "()+"
+                  << offset << "\n";
       }
     } else {
       // couldn't parse the line? print the whole line.
@@ -122,7 +110,7 @@ static inline void print_stacktrace() {
     }
   }
 
-  free(funcname);
+  delete[] funcname;
   free(symbollist);
 }
 #else
@@ -132,8 +120,8 @@ static inline void print_stacktrace() {
 
 namespace bertrand {
 
-/// struct to check if value is contained in a list of values. i.e. to check if
-/// a value is valid for an enum
+/// struct to check if value is contained in a list of values. i.e. to check
+/// if a value is valid for an enum
 template <typename T> struct find {
 
   explicit constexpr find(const T &value) noexcept : value_{value} {}
@@ -163,10 +151,6 @@ inline void assert_handler(bool expr, const char *expression, const char *file,
     std::cerr << buffer.str();
 
 #ifdef BERTRAND_ENABLE_STACKTRACE
-    void *stack[10];
-    size_t size = backtrace(stack, 10);
-
-    backtrace_symbols_fd(stack, size, STDERR_FILENO);
 
     print_stacktrace();
 
