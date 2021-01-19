@@ -12,8 +12,8 @@
 
 #pragma once
 
-///@todo add function to message
-///@todo add possibility for delivering stack trace
+///@todo add possibility for delivering stack trace for macos and msvc
+/// @todo remove calls to bertrand from stack
 
 // fail compilation of contracts are force-enabled and force-disabled at the
 // same time
@@ -38,8 +38,13 @@ static_assert(false,
 #include <cstdlib>
 #endif
 
+#if defined(BERTRAND_DISABLE_STACKTRACE) && defined(BERTRAND_ENABLE_STACKTRACE)
+static_assert(false, "Cannot enable and disable stacktrace at the same time");
+#endif
+
+#if !defined(BERTRAND_DISABLE_STACKTRACE)
 #if __has_include(<execinfo.h>)
-#define BERTRAND_PRINT_STACKTRACE
+#define BERTRAND_ENABLE_STACKTRACE
 #include <cxxabi.h>
 
 #include <dlfcn.h> // for dladdr
@@ -76,6 +81,7 @@ static inline void print_stacktrace() {
 
     // find parentheses and +address offset surrounding the mangled name:
     // ./module(function+0x15c) [0x8048a6d]
+    // todo use <regex>
     for (char *p = symbollist[i]; *p; ++p) {
       if (*p == '(')
         begin_name = p;
@@ -120,7 +126,8 @@ static inline void print_stacktrace() {
   free(symbollist);
 }
 #else
-#undef BERTRAND_PRINT_STACKTRACE
+#undef BERTRAND_ENABLE_STACKTRACE
+#endif
 #endif
 
 namespace bertrand {
@@ -155,7 +162,7 @@ inline void assert_handler(bool expr, const char *expression, const char *file,
     buffer << "\n";
     std::cerr << buffer.str();
 
-#ifdef BERTRAND_PRINT_STACKTRACE
+#ifdef BERTRAND_ENABLE_STACKTRACE
     void *stack[10];
     size_t size = backtrace(stack, 10);
 
