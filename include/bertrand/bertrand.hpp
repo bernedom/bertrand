@@ -53,7 +53,7 @@ static_assert(false, "Cannot enable and disable stacktrace at the same time");
 #include <string>
 #include <unistd.h>
 
-static inline void print_stacktrace(std::stringstream &output) {
+void print_stacktrace(std::stringstream &output) {
   output << "Stack trace\n";
 
   // storage array for stack trace address data
@@ -81,7 +81,9 @@ static inline void print_stacktrace(std::stringstream &output) {
   // std::regex tokenizer_regex{"(.+)\\((.+)\\+(0x[0-9]+)\\)\\[(.+)\\]" };
   std::regex tokenizer_regex{"(.+)\\((.+)\\+(0x[a-f0-9]+)\\)(.+)"};
 
-  for (int i = 1; i < addrlen; i++) {
+  // Skip the first two functions on the stack (this function and
+  // bertrand::assert_handler)
+  for (int i = 2; i < addrlen; i++) {
 
     std::smatch matches;
     std::string str(symbollist[i]);
