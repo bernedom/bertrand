@@ -53,8 +53,8 @@ static_assert(false, "Cannot enable and disable stacktrace at the same time");
 #include <string>
 #include <unistd.h>
 
-static inline void print_stacktrace() {
-  std::cerr << "Stack trace\n";
+static inline void print_stacktrace(std::stringstream &output) {
+  output << "Stack trace\n";
 
   // storage array for stack trace address data
   void *addrlist[64];
@@ -63,7 +63,7 @@ static inline void print_stacktrace() {
   int addrlen = backtrace(addrlist, sizeof(addrlist) / sizeof(void *));
 
   if (addrlen == 0) {
-    std::cerr << "  Empty stack trace, possibly corrupt\n";
+    output << "  Empty stack trace, possibly corrupt\n";
     return;
   }
 
@@ -72,8 +72,9 @@ static inline void print_stacktrace() {
   char **symbollist = backtrace_symbols(addrlist, addrlen);
 
   // allocate string which will be filled with the demangled function name
-  size_t funcnamesize = 256;
-  char *funcname = new char[funcnamesize];
+  size_t max_name_size = 256;
+  char *demangled_name = new char[max_name_size];
+  int demangle_status;
 
   // iterate over the returned symbol lines. skip the first, it is the
   // address of this function.
@@ -90,28 +91,27 @@ static inline void print_stacktrace() {
       const std::string offset = matches[3].str();
       const std::string address = matches[4].str();
 
-      int status;
-      char *ret = abi::__cxa_demangle(mangled_name.c_str(), funcname,
-                                      &funcnamesize, &status);
-      if (status == 0) {
-        funcname = ret; // use possibly realloc()-ed string
-        std::cerr << "  " << module_name << " : " << funcname << "+" << offset
-                  << "\n";
+      char *ret = abi::__cxa_demangle(mangled_name.c_str(), demangled_name,
+                                      &max_name_size, &demangle_status);
+      if (demangle_status == 0) {
+        demangled_name = ret; // use possibly realloc()-ed string
+        output << "  " << module_name << " : " << demangled_name << "+"
+               << offset << "\n";
 
       } else {
         // demangling failed. Output function name as a C function with
         // no arguments.
-        std::cerr << "  " << module_name << " : " << mangled_name << "()+"
-                  << offset << "\n";
+        output << "  " << module_name << " : " << mangled_name << "()+"
+               << offset << "\n";
       }
     } else {
       // couldn't parse the line? print the whole line.
-      std::cerr << "  " << symbollist[i] << "\n";
+      output << "  " << symbollist[i] << "\n";
     }
   }
 
-  delete[] funcname;
-  free(symbollist);
+  delete[] demangled_name;
+  delete[] symbollist;
 }
 #else
 #undef BERTRAND_ENABLE_STACKTRACE
@@ -148,13 +148,13 @@ inline void assert_handler(bool expr, const char *expression, const char *file,
       (buffer << ... << args);
     }
     buffer << "\n";
-    std::cerr << buffer.str();
 
 #ifdef BERTRAND_ENABLE_STACKTRACE
 
-    print_stacktrace();
+    print_stacktrace(buffer);
 
 #endif
+    std::cerr << buffer.str();
 #ifdef BERTRAND_CONTRACTS_ARE_EXCEPTIONS
     throw std::runtime_error(buffer.str());
 #else
