@@ -22,10 +22,26 @@ TEST_CASE("GIVEN a contract AND printing stacktrace is enable WHEN the "
       "Stack tracing is not neabled, enable with BERTRAND_ENABLE_STACKTRACE");
 #endif
 
-  auto matcher = Catch::Matchers::Matches(".*");
-  // std::stringstream expected;
-  // expected << "Assert at: " << __FILE__ << ":";
-  // expected << 9 << ": Require ('false') Something goes wrong here\n";
-  // expected << "Stack trace:\n";
-  REQUIRE_THROWS_WITH(wrapper_two(), matcher);
+  REQUIRE_THROWS_WITH(wrapper_two(),
+                      Catch::Matchers::Contains("contract_thrower()") &&
+                          Catch::Matchers::Contains("wrapper_one()") &&
+                          Catch::Matchers::Contains("wrapper_two()"));
+}
+
+// Test scaffolding are three nested functions
+void contract_thrower(int i) { Require(i == 0, "1 is not 0"); }
+
+void wrapper_one(int i) { contract_thrower(i); }
+
+void wrapper_two(int i) { wrapper_one(i); }
+// End scaffolding
+
+TEST_CASE("GIVEN a contract AND printing stacktrace is enabled WHEN the "
+          "contract fails THEN the "
+          "stack trace is printed out AND argument types are in stacktrace") {
+
+  REQUIRE_THROWS_WITH(wrapper_two(1),
+                      Catch::Matchers::Contains("contract_thrower(int)") &&
+                          Catch::Matchers::Contains("wrapper_one(int)") &&
+                          Catch::Matchers::Contains("wrapper_two(int)"));
 }
