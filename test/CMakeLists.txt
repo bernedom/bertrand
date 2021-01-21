@@ -67,9 +67,9 @@ target_include_directories(
   failing_contract PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
                            $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
 
-if(CXX_COMPILER_ID STREQUAL "GNU"
-   OR CXX_COMPILER_ID STREQUAL "Clang"
-   OR CXX_COMPILER_ID STREQUAL "AppleClang")
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
+   OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang"
+   OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
   add_executable(stacktrace_tests)
   target_link_libraries(stacktrace_tests PRIVATE Catch2::Catch2)
   target_compile_features(stacktrace_tests PRIVATE cxx_std_17)

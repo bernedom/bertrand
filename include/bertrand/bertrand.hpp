@@ -54,7 +54,7 @@ static_assert(false, "Cannot enable and disable stacktrace at the same time");
 #include <unistd.h>
 
 void print_stacktrace(std::stringstream &output) {
-  output << "Stack trace\n";
+  output << "Stack trace:\n";
 
   // storage array for stack trace address data
   void *addrlist[64];
