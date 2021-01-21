@@ -39,7 +39,7 @@ target_sources(
 target_include_directories(
   bertrand_tests PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
                          $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
-target_link_libraries(bertrand_tests Catch2::Catch2)
+target_link_libraries(bertrand_tests PRIVATE Catch2::Catch2)
 
 target_compile_features(bertrand_tests PRIVATE cxx_std_17)
 
@@ -67,27 +67,36 @@ target_include_directories(
   failing_contract PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
                            $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
 
-add_executable(stacktrace_test)
-target_compile_features(stacktrace_test PRIVATE cxx_std_17)
-target_sources(stacktrace_test PRIVATE stacktrace_test/src/main.cpp)
+if(CXX_COMPILER_ID STREQUAL "GNU"
+   OR CXX_COMPILER_ID STREQUAL "Clang"
+   OR CXX_COMPILER_ID STREQUAL "AppleClang")
+  add_executable(stacktrace_tests)
+  target_link_libraries(stacktrace_tests PRIVATE Catch2::Catch2)
+  target_compile_features(stacktrace_tests PRIVATE cxx_std_17)
+  target_sources(stacktrace_tests
+                 PRIVATE stacktrace_test/src/stacktrace_test.cc)
 
-target_include_directories(
-  stacktrace_test PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
-                          $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
+  target_include_directories(
+    stacktrace_tests
+    PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
 
-target_compile_options(
-  stacktrace_test
-  PRIVATE
-    $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-Wall>
-    $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-Werror>
-    $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-pedantic>
-)
+  target_compile_options(
+    stacktrace_tests
+    PRIVATE
+      $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-Wall>
+      $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-Werror>
+      $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-pedantic>
+      $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-DBERTRAND_CONTRACTS_ARE_EXCEPTIONS>
+      $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-DBERTRAND_ENABLE_CONTRACTS>
+  )
 
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-  target_link_options(
-    stacktrace_test PRIVATE
-    $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-export-dynamic>)
+  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_link_options(
+      stacktrace_tests PRIVATE
+      $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-export-dynamic>)
+  endif()
+  add_test(NAME stacktrace_tests COMMAND stacktrace_tests)
 endif()
 
 add_test(NAME bertrand_tests COMMAND bertrand_tests)
-add_test(NAME stacktrace_tests COMMAND stacktrace_tests)
