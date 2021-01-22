@@ -67,9 +67,9 @@ target_include_directories(
   failing_contract PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
                            $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
 
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
-   OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang"
-   OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+# the stacktrace test only works properly with gcc, because clang does not
+# supprt -export-dynamic and thus demangling of the symbols might fail
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   add_executable(stacktrace_tests)
   target_link_libraries(stacktrace_tests PRIVATE Catch2::Catch2)
   target_compile_features(stacktrace_tests PRIVATE cxx_std_17)
@@ -83,13 +83,11 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
 
   target_compile_options(
     stacktrace_tests
-    PRIVATE
-      $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-Wall>
-      $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-Werror>
-      $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-pedantic>
-      $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-DBERTRAND_CONTRACTS_ARE_EXCEPTIONS>
-      $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-DBERTRAND_ENABLE_CONTRACTS>
-  )
+    PRIVATE $<$<CXX_COMPILER_ID:GNU>:-Wall>
+            $<$<CXX_COMPILER_ID:GNU>:-Werror>
+            $<$<CXX_COMPILER_ID:GNU>:-pedantic>
+            $<$<CXX_COMPILER_ID:GNU>:-DBERTRAND_CONTRACTS_ARE_EXCEPTIONS>
+            $<$<CXX_COMPILER_ID:GNU>:-DBERTRAND_ENABLE_CONTRACTS>)
 
   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_link_options(
