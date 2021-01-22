@@ -32,13 +32,14 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_BINARY_DIR})
 find_package(Catch2 REQUIRED)
 
 add_executable(bertrand_tests)
-target_sources(bertrand_tests PRIVATE src/Catch2Main.cc src/text_tests.cc
-               src/bertrand_tests.cc src/in_operator_tests.cc)
+target_sources(
+  bertrand_tests PRIVATE src/Catch2Main.cc src/text_tests.cc
+                         src/bertrand_tests.cc src/in_operator_tests.cc)
 
 target_include_directories(
   bertrand_tests PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
                          $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
-target_link_libraries(bertrand_tests Catch2::Catch2)
+target_link_libraries(bertrand_tests PRIVATE Catch2::Catch2)
 
 target_compile_features(bertrand_tests PRIVATE cxx_std_17)
 
@@ -55,6 +56,7 @@ target_compile_options(
     $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-pedantic>
     $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-DBERTRAND_CONTRACTS_ARE_EXCEPTIONS>
     $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-DBERTRAND_ENABLE_CONTRACTS>
+    $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-DBERTRAND_DISABLE_STACKTRACE>
 )
 
 add_executable(failing_contract)
@@ -64,5 +66,35 @@ target_sources(failing_contract PRIVATE src/failing_contract.cc)
 target_include_directories(
   failing_contract PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
                            $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
+
+# the stacktrace test only works properly with gcc, because clang does not
+# supprt -export-dynamic and thus demangling of the symbols might fail
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  add_executable(stacktrace_tests)
+  target_link_libraries(stacktrace_tests PRIVATE Catch2::Catch2)
+  target_compile_features(stacktrace_tests PRIVATE cxx_std_17)
+  target_sources(stacktrace_tests
+                 PRIVATE stacktrace_test/src/stacktrace_test.cc)
+
+  target_include_directories(
+    stacktrace_tests
+    PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
+
+  target_compile_options(
+    stacktrace_tests
+    PRIVATE $<$<CXX_COMPILER_ID:GNU>:-Wall>
+            $<$<CXX_COMPILER_ID:GNU>:-Werror>
+            $<$<CXX_COMPILER_ID:GNU>:-pedantic>
+            $<$<CXX_COMPILER_ID:GNU>:-DBERTRAND_CONTRACTS_ARE_EXCEPTIONS>
+            $<$<CXX_COMPILER_ID:GNU>:-DBERTRAND_ENABLE_CONTRACTS>)
+
+  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_link_options(
+      stacktrace_tests PRIVATE
+      $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-export-dynamic>)
+  endif()
+  add_test(NAME stacktrace_tests COMMAND stacktrace_tests)
+endif()
 
 add_test(NAME bertrand_tests COMMAND bertrand_tests)

@@ -25,7 +25,7 @@ float divide(float dividend, float divisor) {
 
 ```
 
-The contract related keywords `Require`, `Ensure` and `Invariant` are implemented. A failing contract results in immediate program termination by an `abort`. The contract message is printed to stderr. Passing multiple values to the contract for additional debug information is possible as long as the type is supported by the stream operator `<<`
+The contract related keywords `Require`, `Ensure` and `Invariant` are implemented. A failing contract results in immediate program termination by an `abort`. The contract message is printed to stderr. For gcc and clang the stack trace is also printed out. Passing multiple values to the contract for additional debug information is possible as long as the type is supported by the stream operator `<<`
 ```cpp
 Require(false, "Something is not right: ", someVariable, " and ", anotherVariable)
 ```
@@ -33,6 +33,9 @@ Require(false, "Something is not right: ", someVariable, " and ", anotherVariabl
 By default contracts are enabled unless the `NDEBUG` compiler flag is set. Contracts can be force enabled or disabled by passing the compiler flag `BERTRAND_ENABLE_CONTRACTS` or `BERTRAND_DISABLE_CONTRACTS` passing both will lead to a compiler error. 
 
 In order to facilitate testing of the contract functionality contracts are throwing an exception instead of calling abort, if the preprocessor-flag `BERTRAND_CONTRACTS_ARE_EXCEPTIONS` is set. 
+
+By default printing the stacktrace is enabled for gcc or clang, but it can be disabled by passing the preprocessor-flag `BERTRAND_DISABLE_STACKTRACE`.
+To enable proper demangling of the symbols of the stack trace pass `-export-dynamic` to the linker. Either directly or by passing `-rdynamic` to the compiler.
 
 ## Extended helpers for more complicated tests
 

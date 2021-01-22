@@ -2,6 +2,7 @@
 
 ## 0.0.14
 
+*   bertrand prints stacktrace on contract for gcc and clang. 
 *   Rename branch `master` to `main`
 
 ## 0.0.13
