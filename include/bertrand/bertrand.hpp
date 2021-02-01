@@ -52,7 +52,14 @@ static_assert(false, "Cannot enable and disable stacktrace at the same time");
 #include <regex>
 #include <string>
 #include <unistd.h>
+#else
+#undef BERTRAND_ENABLE_STACKTRACE
+#endif
+#endif
 
+inline namespace bertrand {
+
+#if defined(BERTRAND_ENABLE_STACKTRACE)
 inline void print_stacktrace(std::stringstream &output) {
   output << "Stack trace:\n";
 
@@ -115,12 +122,8 @@ inline void print_stacktrace(std::stringstream &output) {
   delete[] demangled_name;
   delete[] symbollist;
 }
-#else
-#undef BERTRAND_ENABLE_STACKTRACE
-#endif
-#endif
 
-namespace bertrand {
+#endif
 
 /// struct to check if value is contained in a list of values. i.e. to check
 /// if a value is valid for an enum
