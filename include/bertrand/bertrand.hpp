@@ -53,7 +53,7 @@ static_assert(false, "Cannot enable and disable stacktrace at the same time");
 #include <string>
 #include <unistd.h>
 
-void print_stacktrace(std::stringstream &output) {
+inline void print_stacktrace(std::stringstream &output) {
   output << "Stack trace:\n";
 
   // storage array for stack trace address data
