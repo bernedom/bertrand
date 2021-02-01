@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.15
+
+*   Fix bug caused by non-inlining header only function
+*   refactored all bertrand-related functions into namespace `bertrand`
+
 ## 0.0.14
 
 *   bertrand prints stacktrace on contract for gcc and clang. 
