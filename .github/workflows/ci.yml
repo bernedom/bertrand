@@ -18,11 +18,11 @@ jobs:
           [ubuntu-gcc-7, ubuntu-clang-6, macos-appleclang-11, windows-msvc-19]
         include:
           - name: ubuntu-gcc-7
-            os: ubuntu-latest
+            os: ubuntu-18.04
             compiler: g++-7
 
           - name: ubuntu-clang-6
-            os: ubuntu-latest
+            os: ubuntu-18.04
             compiler: clang++-6.0
 
           - name: macos-appleclang-11
