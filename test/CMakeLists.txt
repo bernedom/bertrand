@@ -51,13 +51,12 @@ target_compile_options(
     $<$<CXX_COMPILER_ID:MSVC>:/WX>
     $<$<CXX_COMPILER_ID:MSVC>:/DBERTRAND_CONTRACTS_ARE_EXCEPTIONS>
     $<$<CXX_COMPILER_ID:MSVC>:/DBERTRAND_ENABLE_CONTRACTS>
-    $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-Wall>
-    $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-Werror>
-    $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-pedantic>
-    $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-DBERTRAND_CONTRACTS_ARE_EXCEPTIONS>
-    $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-DBERTRAND_ENABLE_CONTRACTS>
-    $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-DBERTRAND_DISABLE_STACKTRACE>
-)
+    $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-Wall>
+    $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-Werror>
+    $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-pedantic>
+    $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-DBERTRAND_CONTRACTS_ARE_EXCEPTIONS>
+    $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-DBERTRAND_ENABLE_CONTRACTS>
+    $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-DBERTRAND_DISABLE_STACKTRACE>)
 
 add_executable(failing_contract)
 target_compile_features(failing_contract PRIVATE cxx_std_17)
@@ -90,9 +89,8 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
             $<$<CXX_COMPILER_ID:GNU>:-DBERTRAND_ENABLE_CONTRACTS>)
 
   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    target_link_options(
-      stacktrace_tests PRIVATE
-      $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-export-dynamic>)
+    target_link_options(stacktrace_tests PRIVATE
+                        $<$<CXX_COMPILER_ID:GNU,Clang>:-export-dynamic>)
   endif()
   add_test(NAME stacktrace_tests COMMAND stacktrace_tests)
 endif()
