@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.16
+
+*   Streamlinging CMake slightly 
+
 ## 0.0.15
 
 *   Fix bug caused by non-inlining header only function
