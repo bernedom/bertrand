@@ -1,6 +1,6 @@
 # Conan build and deploy action
 
-This action creates a conan package and deploys it to bintray
+This action spins up a docker container and runs the installation tests inside
 
 ## Inputs
 
