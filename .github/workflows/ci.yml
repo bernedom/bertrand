@@ -15,15 +15,15 @@ jobs:
       fail-fast: true
       matrix:
         name:
-          [ubuntu-gcc-7, ubuntu-clang-6, macos-appleclang-11, windows-msvc-19]
+          [ubuntu-gcc-7, ubuntu-clang-9, macos-appleclang-11, windows-msvc-19]
         include:
           - name: ubuntu-gcc-7
-            os: ubuntu-latest
+            os: ubuntu-18.04
             compiler: g++-7
 
-          - name: ubuntu-clang-6
-            os: ubuntu-latest
-            compiler: clang++-6.0
+          - name: ubuntu-clang-9
+            os: ubuntu-18.04
+            compiler: clang++-9
 
           - name: macos-appleclang-11
             os: macos-latest
@@ -82,31 +82,3 @@ jobs:
         with:
           script: ./test/installation-tests.sh
         id: installation-tests
-
-  deploy-to-conan:
-    needs: [ci, installation-tests]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: dbgprint
-        run: echo ${{ github.ref }}
-      - name: publish-unstable-to-bintray
-        if: github.event.action != 'published' && github.ref == 'refs/heads/main'
-        uses: ./.github/actions/deploy-conan-to-bintray
-        with:
-          conan_package: bertrand
-          conan_channel: bertrand/unstable
-          conan_remote: "https://api.bintray.com/conan/bernedom/conan"
-          conan_user: ${{secrets.CONAN_LOGIN_USERNAME}}
-          conan_pass: ${{secrets.CONAN_PASSWORD}}
-        id: conan-deploy
-      - name: publish-stable-to-bintray
-        if: github.event.action == 'published'
-        uses: ./.github/actions/deploy-conan-to-bintray
-        with:
-          conan_package: bertrand
-          conan_channel: bertrand/stable
-          conan_remote: "https://api.bintray.com/conan/bernedom/conan"
-          conan_user: ${{secrets.CONAN_LOGIN_USERNAME}}
-          conan_pass: ${{secrets.CONAN_PASSWORD}}
-        id: conan-deploy-stable

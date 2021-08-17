@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.15)
 
 project(
   "bertrand"
-  VERSION 0.0.15
+  VERSION 0.0.16
   DESCRIPTION
     "A header only c++ library providing functionality for design by contract"
   HOMEPAGE_URL "https://github.com/bernedom/bertrand")

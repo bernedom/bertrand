@@ -1,5 +1,5 @@
 /**
- * This file is part of "bertrand" version 0.0.15
+ * This file is part of "bertrand" version 0.0.16
  * https://github.com/bernedom/bertrand
  * A minimalistic, header only implementation of design by contract for C++
  *
@@ -132,7 +132,7 @@ template <typename T> struct find {
   explicit constexpr find(const T &value) noexcept : value_{value} {}
 
   template <typename... Args>
-  constexpr bool in(const Args &... args) const noexcept {
+  constexpr bool in(const Args &...args) const noexcept {
     return (... || (args == value_));
   }
 
@@ -143,7 +143,7 @@ private:
 template <typename... Args>
 inline void assert_handler(bool expr, const char *expression, const char *file,
                            int line, const char *type, const char *message,
-                           const Args &... args) {
+                           const Args &...args) {
   if (!expr) {
     std::stringstream buffer;
 
