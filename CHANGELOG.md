@@ -2,7 +2,8 @@
 
 ## 0.0.16
 
-*   Moving to clang9 for CI, because clang 6.0 is no longer avaliable
+*   Moving to clang9 for CI, because clang 6.0 is no longer available
+*   Removing steps to deploy to bintray, because it has been shut down
 *   Streamlining `CMakeLists.txt` a tiny bit 
 
 ## 0.0.15
