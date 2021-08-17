@@ -2,7 +2,8 @@
 
 ## 0.0.16
 
-*   Streamlinging CMake slightly 
+*   Moving to clang9 for CI, because clang 6.0 is no longer avaliable
+*   Streamlining `CMakeLists.txt` a tiny bit 
 
 ## 0.0.15
 

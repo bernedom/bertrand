@@ -15,15 +15,15 @@ jobs:
       fail-fast: true
       matrix:
         name:
-          [ubuntu-gcc-7, ubuntu-clang-6, macos-appleclang-11, windows-msvc-19]
+          [ubuntu-gcc-7, ubuntu-clang-9, macos-appleclang-11, windows-msvc-19]
         include:
           - name: ubuntu-gcc-7
             os: ubuntu-18.04
             compiler: g++-7
 
-          - name: ubuntu-clang-6
+          - name: ubuntu-clang-9
             os: ubuntu-18.04
-            compiler: clang++-6.0
+            compiler: clang++-9
 
           - name: macos-appleclang-11
             os: macos-latest
