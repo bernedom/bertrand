@@ -1,4 +1,4 @@
-FROM conanio/gcc8:1.28.1
+FROM conanio/gcc8:1.40.4
 
 USER root
 # Running as a dedicated user is needed,
