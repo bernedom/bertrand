@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.17
+
+*   Add cmake option `BERTRAND_INSTALL_LIBRARY` to set if bertrand is installed. Default is `ON` unless bertrand is included using `add_subfolder` 
+
 ## 0.0.16
 
 *   Moving to clang9 for CI, because clang 6.0 is no longer available
