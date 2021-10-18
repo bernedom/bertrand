@@ -15,7 +15,7 @@ class bertrandConan(ConanFile):
     exports_sources = "include/*", "CMakeLists.txt", "test/*", "cmake/bertrandConfig.cmake.in", "LICENSE"
     no_copy_source = True
     generators = "cmake", "txt", "cmake_find_package"
-    build_requires = "Catch2/2.11.1@catchorg/stable"
+    build_requires = "catch2/2.13.6"
     _cmake = None
 
     def _configure_cmake(self):
