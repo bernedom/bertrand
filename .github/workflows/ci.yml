@@ -1,6 +1,9 @@
 name: CI
 
 on:
+  schedule:
+    # Run on the 21 of every month on 05:42
+    - cron: "42 5 21 * *"
   push:
   pull_request:
   release:
