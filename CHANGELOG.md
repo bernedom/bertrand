@@ -3,6 +3,7 @@
 ## 0.0.17
 
 *   Add cmake option `BERTRAND_INSTALL_LIBRARY` to set if bertrand is installed. Default is `ON` unless bertrand is included using `add_subfolder` 
+*   Update dependency on catch to version 2.13.7
 
 ## 0.0.16
 

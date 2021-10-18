@@ -16,7 +16,7 @@ else()
         "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
     file(
       DOWNLOAD
-      "https://raw.githubusercontent.com/conan-io/cmake-conan/v0.15/conan.cmake"
+      "https://raw.githubusercontent.com/conan-io/cmake-conan/v0.16.1/conan.cmake"
       "${CMAKE_CURRENT_BINARY_DIR}/conan.cmake")
   endif()
 
