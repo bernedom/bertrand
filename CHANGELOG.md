@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.18
+
+*   Extended documentation for additional install options
+
 ## 0.0.17
 
 *   Add cmake option `BERTRAND_INSTALL_LIBRARY` to set if bertrand is installed. Default is `ON` unless bertrand is included using `add_subfolder` 
