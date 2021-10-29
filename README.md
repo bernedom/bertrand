@@ -80,6 +80,8 @@ If bertrand is included and the `EXCLUDE_FROM_ALL` flag is set, bertrand test ca
                    EXCLUDE_FROM_ALL)
 ```
 
+If bertrand is added in a subdirectory and should be installed together with the parent project, set the CMake option `BERTRAND_INSTALL_LIBRARY` to force installation. This applies also if bertrand is pulled using CMakes `FetchContent` or `ExternalProject` 
+
 ### conan.io 
 
 bertrand is available from [ConanCenter](https://conan.io/center/)
