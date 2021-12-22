@@ -3,6 +3,7 @@
 ## 0.0.18
 
 *   Extended documentation for additional install options
+*   Updating CMake to be more platform independent
 
 ## 0.0.17
 
