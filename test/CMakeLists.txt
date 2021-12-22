@@ -10,14 +10,23 @@ if(CONAN_EXPORTED)
   include(${PROJECT_BINARY_DIR}/conanbuildinfo.cmake)
   conan_basic_setup(TARGETS)
 else()
+  # Download conan.cmake if it does not already exist
   if(NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/conan.cmake")
     message(
       STATUS
         "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
     file(
       DOWNLOAD
-      "https://raw.githubusercontent.com/conan-io/cmake-conan/v0.16.1/conan.cmake"
-      "${CMAKE_CURRENT_BINARY_DIR}/conan.cmake")
+      "https://raw.githubusercontent.com/conan-io/cmake-conan/0.17.0/conan.cmake"
+      "${CMAKE_CURRENT_BINARY_DIR}/conan.cmake"
+      EXPECTED_HASH
+        SHA256=3bef79da16c2e031dc429e1dac87a08b9226418b300ce004cc125a82687baeef
+      STATUS download_status)
+    if(NOT download_status MATCHES "^0;")
+      message(
+        FATAL_ERROR "Downloading conan.cmake failed with ${download_status}")
+    endif()
+
   endif()
 
   include(${CMAKE_CURRENT_BINARY_DIR}/conan.cmake)
@@ -45,20 +54,21 @@ target_compile_features(bertrand_tests PRIVATE cxx_std_17)
 
 target_compile_options(
   bertrand_tests
-  PRIVATE
-    $<$<CXX_COMPILER_ID:MSVC>:/std:c++17>
-    $<$<CXX_COMPILER_ID:MSVC>:/W4>
-    $<$<CXX_COMPILER_ID:MSVC>:/WX>
-    $<$<CXX_COMPILER_ID:MSVC>:/DBERTRAND_CONTRACTS_ARE_EXCEPTIONS>
-    $<$<CXX_COMPILER_ID:MSVC>:/DBERTRAND_ENABLE_CONTRACTS>
-    $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-Wall>
-    $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-Werror>
-    $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-pedantic>
-    $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-DBERTRAND_CONTRACTS_ARE_EXCEPTIONS>
-    $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-DBERTRAND_ENABLE_CONTRACTS>
-    $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-DBERTRAND_DISABLE_STACKTRACE>)
+  PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/std:c++17>
+          $<$<CXX_COMPILER_ID:MSVC>:/W4>
+          $<$<CXX_COMPILER_ID:MSVC>:/WX>
+          $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-Wall>
+          $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-Werror>
+          $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-pedantic>)
+
+target_compile_definitions(
+  bertrand_tests
+  PRIVATE BERTRAND_ENABLE_CONTRACTS
+  PRIVATE BERTRAND_CONTRACTS_ARE_EXCEPTIONS
+  PRIVATE BERTRAND_DISABLE_STACKTRACE)
 
 add_executable(failing_contract)
+
 target_compile_features(failing_contract PRIVATE cxx_std_17)
 target_sources(failing_contract PRIVATE src/failing_contract.cc)
 
@@ -82,11 +92,12 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 
   target_compile_options(
     stacktrace_tests
-    PRIVATE $<$<CXX_COMPILER_ID:GNU>:-Wall>
-            $<$<CXX_COMPILER_ID:GNU>:-Werror>
-            $<$<CXX_COMPILER_ID:GNU>:-pedantic>
-            $<$<CXX_COMPILER_ID:GNU>:-DBERTRAND_CONTRACTS_ARE_EXCEPTIONS>
-            $<$<CXX_COMPILER_ID:GNU>:-DBERTRAND_ENABLE_CONTRACTS>)
+    PRIVATE $<$<CXX_COMPILER_ID:GNU>:-Wall> $<$<CXX_COMPILER_ID:GNU>:-Werror>
+            $<$<CXX_COMPILER_ID:GNU>:-pedantic>)
+  target_compile_definitions(
+    stacktrace_tests
+    PRIVATE BERTRAND_ENABLE_CONTRACTS
+    PRIVATE BERTRAND_CONTRACTS_ARE_EXCEPTIONS)
 
   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_link_options(stacktrace_tests PRIVATE
