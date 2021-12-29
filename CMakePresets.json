@@ -23,6 +23,11 @@
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release"
             }
+        },
+        {
+            "name": "MSVC-19",
+            "displayName": "MSVC 19",
+            "generator": "Visual Studio 16 2019"
         }
     ]
 }

@@ -19,6 +19,7 @@ jobs:
       matrix:
         name:
           [ubuntu-gcc-7, ubuntu-clang-9, macos-appleclang-11, windows-msvc-19]
+        preset: [ninja-debug, ninja-release]
         include:
           - name: ubuntu-gcc-7
             os: ubuntu-18.04
@@ -33,6 +34,14 @@ jobs:
 
           - name: windows-msvc-19
             os: windows-latest
+            preset: MSVC-19
+
+        exclude:
+          - name: windows-msvc-19
+            preset: ninja-debug
+
+          - name: windows-msvc-19
+            preset: ninja-release
 
     steps:
       - uses: actions/checkout@v1
@@ -58,6 +67,11 @@ jobs:
 
       - name: make-build-dir
         run: mkdir build
+
+      - name: cmake-configure-preset
+        run: cmake --preset ${{ matrix.preset }}
+
+      # remove the cmake steps below once presets are working
       - name: cmake-configure-debug
         run: cmake -DCMAKE_BUILD_TYPE=Debug ..
         working-directory: ./build
