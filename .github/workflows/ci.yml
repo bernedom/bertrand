@@ -35,6 +35,12 @@ jobs:
           - name: windows-msvc-19
             os: windows-latest
             preset: MSVC-19
+            buildPreset: msvc-debug
+
+          - name: windows-msvc-19
+            os: windows-latest
+            preset: MSVC-19
+            buildPreset: msvc-release
 
         exclude:
           - name: windows-msvc-19
@@ -65,26 +71,22 @@ jobs:
           fi
         shell: bash
 
-      - name: make-build-dir
-        run: mkdir build
-
       - name: cmake-configure-preset
         run: cmake --preset ${{ matrix.preset }}
 
       # remove the cmake steps below once presets are working
-      - name: cmake-configure-debug
-        run: cmake -DCMAKE_BUILD_TYPE=Debug ..
-        working-directory: ./build
-      - name: build-debug
-        run: cmake --build ./build --config Debug
+      - name: build
+        run: |
+          if [ "${{ matrix.buildPreset }}" == "" ]; then
+            cmake --build ./build --config Debug
+          else
+            cmake --build --preset ${{ matrix.buildPreset }}
+          fi
+        shell: bash
+
       - name: ctest
         run: ctest -C Debug
         working-directory: ./build
-
-      - name: cmake-configure-release
-        run: cmake -B build -DCMAKE_BUILD_TYPE=Release
-      - name: build-release
-        run: cmake --build ./build --config Release
 
       - name: program-termination-tests
         if: runner.os == 'Linux' || runner.os == 'macOS'
