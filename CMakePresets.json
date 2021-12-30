@@ -35,5 +35,17 @@
                 "rhs": "Windows"
             }
         }
+    ],
+    "buildPresets": [
+        {
+            "name": "msvc-debug",
+            "configurePreset": "MSVC-19",
+            "configuration": "Debug"
+        },
+        {
+            "name": "msvc-release",
+            "configurePreset": "MSVC-19",
+            "configuration": "Release"
+        }
     ]
 }
