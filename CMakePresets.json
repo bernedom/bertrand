@@ -27,7 +27,13 @@
         {
             "name": "MSVC-19",
             "displayName": "MSVC 19",
-            "generator": "Visual Studio 16 2019"
+            "generator": "Visual Studio 16 2019",
+            "binaryDir": "build",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
         }
     ]
 }
