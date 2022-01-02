@@ -85,7 +85,7 @@ jobs:
         shell: bash
 
       - name: ctest
-        run: ctest -C Debug
+        run: ctest
         working-directory: ./build
 
       - name: program-termination-tests
