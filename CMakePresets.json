@@ -51,6 +51,7 @@
     "testPresets": [
         {
             "name": "unit-tests-debug",
+            "displayName": "Unit Tests (Debug)",
             "configurePreset": "ninja-debug",
             "configuration": "Debug",
             "inheritConfigureEnvironment": true
