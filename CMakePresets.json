@@ -52,9 +52,26 @@
         {
             "name": "unit-tests-debug",
             "displayName": "Unit Tests (Debug)",
-            "configurePreset": "ninja-debug",
+            "configurePreset": "MSVC-19",
             "configuration": "Debug",
-            "inheritConfigureEnvironment": true
+            "inheritConfigureEnvironment": true,
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
+        },
+        {
+            "name": "unit-tests-release",
+            "displayName": "Unit Tests (Release)",
+            "configurePreset": "MSVC-19",
+            "configuration": "Release",
+            "inheritConfigureEnvironment": true,
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
         }
     ]
 }

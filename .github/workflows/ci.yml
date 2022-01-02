@@ -36,11 +36,13 @@ jobs:
             os: windows-latest
             preset: MSVC-19
             buildPreset: msvc-debug
+            testPreset: unit-tests-debug
 
           - name: windows-msvc-19
             os: windows-latest
             preset: MSVC-19
             buildPreset: msvc-release
+            testPreset: unit-tests-release
 
         exclude:
           - name: windows-msvc-19
@@ -85,8 +87,13 @@ jobs:
         shell: bash
 
       - name: ctest
-        run: ctest
-        working-directory: ./build
+        run: |
+          if [ "${{ matrix.testPreset }}" == "" ]; then
+            ctest
+          else
+            ctest --preset ${{ matrix.testPreset }}
+          fi
+        shell: bash
 
       - name: program-termination-tests
         if: runner.os == 'Linux' || runner.os == 'macOS'
