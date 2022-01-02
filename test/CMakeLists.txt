@@ -77,8 +77,8 @@ target_include_directories(
                            $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
 
 # the stacktrace test only works properly with gcc, because clang does not
-# supprt -export-dynamic and thus demangling of the symbols might fail
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+# support -export-dynamic and thus demangling of the symbols might fail
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_BUILD_TYPE STREQUAL "Debug")
   add_executable(stacktrace_tests)
   target_link_libraries(stacktrace_tests PRIVATE Catch2::Catch2)
   target_compile_features(stacktrace_tests PRIVATE cxx_std_17)
@@ -98,11 +98,10 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     stacktrace_tests
     PRIVATE BERTRAND_ENABLE_CONTRACTS
     PRIVATE BERTRAND_CONTRACTS_ARE_EXCEPTIONS)
-
-  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+  
     target_link_options(stacktrace_tests PRIVATE
                         $<$<CXX_COMPILER_ID:GNU,Clang>:-export-dynamic>)
-  endif()
+  
   add_test(NAME stacktrace_tests COMMAND stacktrace_tests)
 endif()
 

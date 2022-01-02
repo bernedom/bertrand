@@ -47,5 +47,13 @@
             "configurePreset": "MSVC-19",
             "configuration": "Release"
         }
+    ],
+    "testPresets": [
+        {
+            "name": "unit-tests-debug",
+            "configurePreset": "ninja-debug",
+            "configuration": "Debug",
+            "inheritConfigureEnvironment": true
+        }
     ]
 }

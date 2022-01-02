@@ -75,11 +75,10 @@ jobs:
       - name: cmake-configure-preset
         run: cmake --preset ${{ matrix.preset }}
 
-      # remove the cmake steps below once presets are working
       - name: build
         run: |
           if [ "${{ matrix.buildPreset }}" == "" ]; then
-            cmake --build ./build --config Debug
+            cmake --build ./build 
           else
             cmake --build --preset ${{ matrix.buildPreset }}
           fi
