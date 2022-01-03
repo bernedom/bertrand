@@ -17,8 +17,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        name:
-          [ubuntu-gcc-7, ubuntu-clang-9, macos-appleclang-11, windows-msvc-19]
+        os: [ubuntu-18.04, windows-2019, macos-10.15]
         preset: [ninja-debug, ninja-release]
         include:
           - name: ubuntu-gcc-7
@@ -29,29 +28,35 @@ jobs:
             os: ubuntu-18.04
             compiler: clang++-9
 
-          - name: macos-appleclang-11
-            os: macos-latest
+          - name: macos-10.15
+            os: macos-10.15
 
-          - name: windows-msvc-19
-            os: windows-latest
+          - name: windows-msvc-19-debug
+            os: windows-2019
             preset: MSVC-19
             buildPreset: msvc-debug
             testPreset: unit-tests-debug
 
-          - name: windows-msvc-19
-            os: windows-latest
+          - name: windows-msvc-19-release
+            os: windows-2019
             preset: MSVC-19
             buildPreset: msvc-release
             testPreset: unit-tests-release
 
         exclude:
-          - name: windows-msvc-19
+          - os: windows-2019
             preset: ninja-debug
 
-          - name: windows-msvc-19
+          - os: windows-2019
             preset: ninja-release
 
     steps:
+      - name: display matrix settings
+        run: |
+          echo "OS: ${{ matrix.os }}" 
+          echo "Preset: ${{ matrix.preset }}"
+          echo "Compiler: ${{ matrix.compiler }}"
+
       - uses: actions/checkout@v1
       - name: dependencies (Linux)
         if: runner.os == 'Linux'
