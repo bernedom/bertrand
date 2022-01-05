@@ -34,18 +34,28 @@
                 "lhs": "${hostSystemName}",
                 "rhs": "Windows"
             }
-        }
+        },
     ],
     "buildPresets": [
         {
             "name": "msvc-debug",
             "configurePreset": "MSVC-19",
-            "configuration": "Debug"
+            "configuration": "Debug",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
         },
         {
             "name": "msvc-release",
             "configurePreset": "MSVC-19",
-            "configuration": "Release"
+            "configuration": "Release",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
         }
     ],
     "testPresets": [
