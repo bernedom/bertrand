@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-18.04, windows-2019, macos-10.15]
+        name: [ubuntu-gcc-7, ubuntu-clang-9, macos-10.15]
         preset: [ninja-debug, ninja-release]
         include:
           - name: ubuntu-gcc-7
@@ -42,13 +42,6 @@ jobs:
             preset: MSVC-19
             buildPreset: msvc-release
             testPreset: unit-tests-release
-
-        exclude:
-          - os: windows-2019
-            preset: ninja-debug
-
-          - os: windows-2019
-            preset: ninja-release
 
     steps:
       - name: display matrix settings
