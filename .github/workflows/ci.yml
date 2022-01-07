@@ -94,9 +94,9 @@ jobs:
       - name: ctest
         run: |
           if [ "${{ matrix.testPreset }}" == "" ]; then
-            ctest
+            ctest --test-dir build
           else
-            ctest --preset ${{ matrix.testPreset }}
+            ctest --preset=${{ matrix.testPreset }}
           fi
         shell: bash
 
